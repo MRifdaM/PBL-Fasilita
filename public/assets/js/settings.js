@@ -2,14 +2,14 @@
   'use strict';
   $(function() {
     $(".nav-settings").on("click", function() {
-      $("#right-sidebar").toggleClass("open");
+      $("#right-sidebar").addClass("open");
     });
     $(".settings-close").on("click", function() {
       $("#right-sidebar,#theme-settings").removeClass("open");
     });
 
     $("#settings-trigger").on("click" , function(){
-      $("#theme-settings").toggleClass("open");
+      $("#theme-settings").addClass("open");
     });
 
 
