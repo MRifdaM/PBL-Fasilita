@@ -10,5 +10,5 @@ class Peran extends Model
     use HasFactory;
 
     protected $table = 'peran'; // nama tabel di database
-    protected $fillable = ['nama']; // field yang bisa diisi
+    protected $fillable = ['kode_peran', 'nama_peran'];
 }

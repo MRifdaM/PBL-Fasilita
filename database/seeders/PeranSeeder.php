@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Peran;
+use Illuminate\Support\Facades\DB;
 
 class PeranSeeder extends Seeder
 {
@@ -13,10 +14,13 @@ class PeranSeeder extends Seeder
      */
     public function run(): void
     {
-        $roles = ['admin', 'mahasiswa', 'dosen', 'tendik', 'sarpras', 'teknisi'];
-
-        foreach ($roles as $role) {
-            Peran::create(['nama' => $role]);
-        }
+        DB::table('peran')->insert([
+            ['kode_peran' => 'ADMIN', 'nama_peran' => 'Admin'],
+            ['kode_peran' => 'MHS', 'nama_peran' => 'Mahasiswa'],
+            ['kode_peran' => 'DSN', 'nama_peran' => 'Dosen'],
+            ['kode_peran' => 'TDK', 'nama_peran' => 'Tendik'],
+            ['kode_peran' => 'SPR', 'nama_peran' => 'Sarpras'],
+            ['kode_peran' => 'TNS', 'nama_peran' => 'Teknisi'],
+        ]);
     }
 }
