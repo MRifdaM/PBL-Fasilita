@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('peran', function (Blueprint $table) {
-            $table->id('id_peran');
-            $table->string('kode_peran', 10);
-            $table->string('nama_peran', 100);
+        Schema::create('kriteria', function (Blueprint $table) {
+            $table->id('id_kriteria');
+            $table->string('kode_kriteria', 10)->unique();
+            $table->string('nama_kriteria', 100);
+            $table->float('bobot_kriteria');
+            $table->text('deskripsi')->nullable();
             $table->timestamps();
         });
     }
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('peran');
+        Schema::dropIfExists('kriteria');
     }
 };
