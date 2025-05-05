@@ -64,3 +64,11 @@ Route::get('/erro404', function () {
 Route::get('/erro500', function () {
     return view('pages.error-pages.500.index');
 });
+
+Route::get('/register', function () {
+    return view('auth.register');
+});
+
+Route::get('/login', function () {
+    return view('auth.login');
+});
