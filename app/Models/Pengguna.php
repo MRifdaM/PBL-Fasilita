@@ -17,7 +17,7 @@ class Pengguna extends Model
         'id_peran',
         'username',
         'nama',
-        'hash_password',
+        'password',
         'foto_profil',
     ];
 

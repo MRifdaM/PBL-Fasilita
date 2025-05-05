@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_peran')->index();
             $table->string('username')->unique();
             $table->string('nama');
-            $table->string('hash_password');
+            $table->string('password');
             $table->string('foto_profile')->nullable();
             $table->timestamps();
 
