@@ -34,7 +34,8 @@
             <div class="col-md-5 d-flex flex-column justify-content-between">
                 <img src="{{ asset('assets/images/fasilita-logo.png') }}" class="img-fluid" style="max-width: 100px"
                     alt="">
-                <form class="forms-sample pr-5">
+                <form class="forms-sample pr-5" action="{{ route('login.attempt') }}" method="POST">
+                    @csrf
                     <div class="my-auto">
                         <div class="text-center my-5">
                             <h3>Welcome Back</h3>
@@ -52,9 +53,12 @@
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Login</button>
                     {{-- <button class="btn btn-light">Cancel</button> --}}
+                    <h6 class="mt-5">Belum punya akun? <a href="{{ url('/register') }}">register</a></h6>
                 </div>
                 </form>
-                <div></div>
+                <div>
+
+                </div>
             </div>
             <div class="col-md-7 rounded-lg px-0"
                 style="background-image: url('{{ asset('assets/images/bg-register2.png') }}')">

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,54 +22,7 @@ Route::get('/', function () {
     return view('dashboard.index');
 });
 
-Route::get('/forms', function () {
-    return view('pages.forms.index');
-});
-
-Route::get('/buttons', function () {
-    return view('pages.ui-features.buttons.index');
-});
-
-Route::get('/dropdowns', function () {
-    return view('pages.ui-features.dropdowns.index');
-});
-
-Route::get('/typography', function () {
-    return view('pages.ui-features.typography.index');
-});
-
-Route::get('/chart', function () {
-    return view('pages.chart.index');
-});
-
-Route::get('/table', function () {
-    return view('pages.table.index');
-});
-
-Route::get('/icons', function () {
-    return view('pages.icons.index');
-});
-
-Route::get('/login', function () {
-    return view('pages.user-pages.login.index');
-});
-
-Route::get('/register', function () {
-    return view('pages.user-pages.register.index');
-});
-
-Route::get('/erro404', function () {
-    return view('pages.error-pages.404.index');
-});
-
-Route::get('/erro500', function () {
-    return view('pages.error-pages.500.index');
-});
-
-Route::get('/register', function () {
-    return view('auth.register');
-});
-
-Route::get('/login', function () {
-    return view('auth.login');
-});
+Route::get('/register', [AuthController::class,'showRegister'])->name('register');
+Route::post('/register', [AuthController::class,'register'])->name('register.store');
+Route::get('/login',    [AuthController::class,'showLogin'])->name('login');
+Route::post('/login',   [AuthController::class,'login'])->name('login.attempt');
