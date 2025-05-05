@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Pengguna extends Model
+class Pengguna extends Authenticatable
 {
     use HasFactory;
     protected $table = 'pengguna';
@@ -19,6 +20,15 @@ class Pengguna extends Model
         'nama',
         'password',
         'foto_profil',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    protected $casts = [
+        'password' => 'hashed',
     ];
 
     public function peran(): BelongsTo
