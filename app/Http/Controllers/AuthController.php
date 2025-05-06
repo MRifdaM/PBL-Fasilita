@@ -20,6 +20,7 @@ class AuthController extends Controller
             'nama'                  => 'required|string|max:255',
             'username'              => 'required|string|max:50|unique:pengguna,username',
             'password'              => 'required|string|min:5|confirmed',
+            'password_confirmation' => 'required|string|min:5|same:password',
         ]);
 
         $roleId = Peran::where('kode_peran','MHS')->value('id_peran');

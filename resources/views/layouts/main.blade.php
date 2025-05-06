@@ -66,6 +66,9 @@
   <script src="{{ asset('assets/vendors/datatables.net/jquery.dataTables.js') }}"></script>
   <script src="{{ asset('assets/vendors/datatables.net-bs4/dataTables.bootstrap4.js') }}"></script>
   <script src="{{ asset('assets/js/dataTables.select.min.js') }}"></script>
+  <script src="{{ asset('assets/js/jquery-3.7.1.min.js') }}"></script>
+  <script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
+  <script src="{{ asset('assets/js/additional-methods.min.js') }}"></script>
 
   <!-- End plugin js for this page -->
   <!-- inject:js -->

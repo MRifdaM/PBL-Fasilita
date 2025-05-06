@@ -5,7 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Skydash Admin</title>
+    <title>Login – FASILITA</title>
 
     <!-- plugins:css -->
     <link rel="stylesheet" href="{{ asset('assets/vendors/feather/feather.css') }}">
@@ -43,25 +43,30 @@
                         </div>
                         <div class="form-group">
                         <label for="username">Username</label>
-                        <input type="text" class="form-control" name="username" id="username"
-                        placeholder="Username">
+                        <input type="text" class="form-control @error('username') is-invalid @enderror" name="username" id="username" placeholder="Username">
+                        @error('username')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" class="form-control" name="password" id="password"
+                        <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" id="password"
                         placeholder="Password">
+                        @error('password')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Login</button>
                     {{-- <button class="btn btn-light">Cancel</button> --}}
-                    <h6 class="mt-5">Belum punya akun? <a href="{{ url('/register') }}">register</a></h6>
+                    <p class="mt-3">Belum punya akun? <a href="{{ url('/register') }}">register</a></p>
                 </div>
                 </form>
                 <div>
 
                 </div>
             </div>
-            <div class="col-md-7 rounded-lg px-0"
-                style="background-image: url('{{ asset('assets/images/bg-register2.png') }}')">
+            <div class="col-md-7 px-0"
+                style="background-image: url('{{ asset('assets/images/bg-register2.png') }}'); border-radius: 30px">
                 <div class="d-flex flex-column h-100 justify-content-between">
                     <div class="d-flex flex-row justify-content-between h-25">
                         <div class="w-50 px-4">
@@ -74,9 +79,10 @@
                                 </h5>
                             </div>
                         </div>
-                        <div class="bg-white w-50 pl-3 align-content-center" style="border-radius: 0 0 0 30px; margin-top: -1px">
-                            <div class="stretch-card transparent h-75">
-                                <div class="card card-dark-blue">
+                        <div class="bg-white w-50 pl-3 "
+                            style="border-radius: 0 0 0 30px; margin-top: -1px; ">
+                            <div class="stretch-card transparent h-100 pb-3">
+                                <div class="card card-dark-blue" style="border-radius: 0 30px 0 30px;">
                                     <div class="card-body d-flex flex-column justify-content-end">
                                         <h3>100%</h3>
                                         <h5>Setiap laporan segera diproses</h5>
@@ -139,7 +145,46 @@
     <!-- Custom js for this page-->
     <script src="{{ asset('assets/js/dashboard.js') }}"></script>
     <script src="{{ asset('assets/js/Chart.roundedBarCharts.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('assets/js/additional-methods.min.js') }}"></script>
     <!-- End custom js for this page-->
+
+    <script>
+        $(document).ready(function () {
+            $('#form-register').on('submit', function (e) {
+                e.preventDefault();
+                let formData = new FormData(this);
+        
+                // Bersihkan error sebelumnya
+                $('.form-control').removeClass('is-invalid');
+                $('.invalid-feedback').remove();
+        
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: $(this).attr('method'),
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        alert('Berhasil disimpan!');
+                        // Redirect atau reset form
+                    },
+                    error: function (xhr) {
+                        if (xhr.status === 422) {
+                            let errors = xhr.responseJSON.errors;
+                            $.each(errors, function (key, val) {
+                                let input = $('[name="' + key + '"]');
+                                input.addClass('is-invalid');
+                                input.after('<div class="invalid-feedback">' + val[0] + '</div>');
+                            });
+                        } else {
+                            alert('Terjadi kesalahan server');
+                        }
+                    }
+                });
+            });
+        });
+        </script>
 </body>
 
 </html>

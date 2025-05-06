@@ -98,11 +98,50 @@
     </div>
   </main>
 
-  <!-- JS Skydash -->
-  <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>
-  <script src="{{ asset('assets/js/off-canvas.js') }}"></script>
-  <script src="{{ asset('assets/js/hoverable-collapse.js') }}"></script>
-  <script src="{{ asset('assets/js/template.js') }}"></script>
-  <script src="{{ asset('assets/js/settings.js') }}"></script>
+    <!-- Custom js for this page-->
+    <script src="{{ asset('assets/js/dashboard.js') }}"></script>
+    <script src="{{ asset('assets/js/Chart.roundedBarCharts.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('assets/js/additional-methods.min.js') }}"></script>
+    <!-- End custom js for this page-->
+    <script>
+        $(document).ready(function() {
+            $('#form-register').on('submit', function(e) {
+                e.preventDefault();
+                let formData = new FormData(this);
+
+                // Bersihkan error sebelumnya
+                $('.form-control').removeClass('is-invalid');
+                $('.invalid-feedback').remove();
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: $(this).attr('method'),
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        alert('Berhasil disimpan!');
+                        // Redirect atau reset form
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 422) {
+                            let errors = xhr.responseJSON.errors;
+                            $.each(errors, function(key, val) {
+                                let input = $('[name="' + key + '"]');
+                                input.addClass('is-invalid');
+                                input.after('<div class="invalid-feedback">' + val[0] +
+                                    '</div>');
+                            });
+                        } else {
+                            alert('Terjadi kesalahan server');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 </body>
+
+
 </html>
