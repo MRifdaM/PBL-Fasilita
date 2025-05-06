@@ -27,6 +27,7 @@ Route::post('/register', [AuthController::class,'register'])->name('register.sto
 Route::get('/login',    [AuthController::class,'showLogin'])->name('login');
 Route::post('/login',   [AuthController::class,'login'])->name('login.attempt');
 
+
 Route::get('/peran', function () {
     return view('peran.index');
 });
