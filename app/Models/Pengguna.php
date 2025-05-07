@@ -31,6 +31,16 @@ class Pengguna extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function getRole(): string
+    {
+        return $this->peran->kode_peran;
+    }
+
+    public function hasRole(string $role): bool
+    {
+        return $this->peran->kode_peran === $role;
+    }
+
     public function peran(): BelongsTo
     {
         return $this->belongsTo(Peran::class, 'id_peran');

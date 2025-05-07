@@ -100,5 +100,15 @@
           <span class="menu-title">Author</span>
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ route('logout') }}"
+           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+          <i class="icon-power menu-icon"></i>
+          <span class="menu-title">Logout</span>
+        </a>
+        <form id="logout-form" action="{{ route('logout') }}" method="GET" style="display: none;">
+            @csrf
+        </form>
+      </li>
     </ul>
   </nav>

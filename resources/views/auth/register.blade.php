@@ -10,6 +10,21 @@
   <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.base.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/css/vertical-layout-light/style.css') }}">
   <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
+  <style>
+    .is-invalid {
+      border-color: #dc3545 !important;
+    }
+    .invalid-feedback {
+      display: block;
+      width: 100%;
+      margin-top: 0.25rem;
+      font-size: 80%;
+      color: #dc3545;
+    }
+    .text-danger {
+      color: #dc3545 !important;
+    }
+  </style>
 </head>
 <body>
   <main class="container" style="height: 700px">
@@ -22,7 +37,7 @@
           <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
-        @if($errors->any())
+        @if($errors->any()))
           <div class="alert alert-danger">
             <ul class="mb-0">
               @foreach($errors->all() as $err)
@@ -32,58 +47,69 @@
           </div>
         @endif
 
-        <form method="POST" action="{{ route('register.store') }}" class="forms-sample">
-          @csrf
+        <form id="form-register" method="POST" action="{{ route('register.store') }}" class="forms-sample" novalidate>
+            @csrf
 
-          <div class="form-group">
-            <label for="nama">Nama</label>
-            <input type="text"
-                   id="nama"
-                   name="nama"
-                   class="form-control @error('nama') is-invalid @enderror"
-                   value="{{ old('nama') }}"
-                   placeholder="Nama Lengkap" required>
-            @error('nama')
-              <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
+            <div class="form-group">
+              <label for="nama">Nama</label>
+              <input
+                type="text"
+                id="nama"
+                name="nama"
+                class="form-control @error('nama') is-invalid @enderror"
+                value="{{ old('nama') }}"
+                placeholder="Nama Lengkap"
+              >
+              @error('nama')
+                <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
+            </div>
 
-          <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text"
-                   id="username"
-                   name="username"
-                   class="form-control @error('username') is-invalid @enderror"
-                   value="{{ old('username') }}"
-                   placeholder="Username" required>
-            @error('username')
-              <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                class="form-control @error('username') is-invalid @enderror"
+                value="{{ old('username') }}"
+                placeholder="Username"
+              >
+              @error('username')
+                <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
+            </div>
 
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password"
-                   id="password"
-                   name="password"
-                   class="form-control @error('password') is-invalid @enderror"
-                   placeholder="Password" required>
-            @error('password')
-              <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                class="form-control @error('password') is-invalid @enderror"
+                placeholder="Password"
+              >
+              @error('password')
+                <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
+            </div>
 
-          <div class="form-group">
-            <label for="password_confirmation">Konfirmasi Password</label>
-            <input type="password"
-                   id="password_confirmation"
-                   name="password_confirmation"
-                   class="form-control"
-                   placeholder="Konfirmasi Password" required>
-          </div>
+            <div class="form-group">
+              <label for="password_confirmation">Konfirmasi Password</label>
+              <input
+                type="password"
+                id="password_confirmation"
+                name="password_confirmation"
+                class="form-control @error('password_confirmation') is-invalid @enderror"
+                placeholder="Konfirmasi Password"
+              >
+              @error('password_confirmation')
+                <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
+            </div>
 
-          <button type="submit" class="btn btn-primary w-100">Sign Up</button>
-        </form>
+            <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+          </form>
 
         <p class="mt-3">
           Sudah punya akun?
@@ -98,49 +124,116 @@
     </div>
   </main>
 
-    <!-- Custom js for this page-->
-    <script src="{{ asset('assets/js/dashboard.js') }}"></script>
-    <script src="{{ asset('assets/js/Chart.roundedBarCharts.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('assets/js/additional-methods.min.js') }}"></script>
-    <!-- End custom js for this page-->
-    <script>
-        $(document).ready(function() {
-            $('#form-register').on('submit', function(e) {
-                e.preventDefault();
-                let formData = new FormData(this);
+  {{-- Sweetalert --}}
+    <script src="{{ asset('assets/vendors/sweetalert2/sweetalert2.all.min.js') }}"></script>
 
-                // Bersihkan error sebelumnya
-                $('.form-control').removeClass('is-invalid');
-                $('.invalid-feedback').remove();
+  <!-- JavaScript Libraries -->
+  <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>
+  <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
+  <script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
+  <script src="{{ asset('assets/js/additional-methods.min.js') }}"></script>
 
-                $.ajax({
-                    url: $(this).attr('action'),
-                    method: $(this).attr('method'),
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        alert('Berhasil disimpan!');
-                        // Redirect atau reset form
-                    },
-                    error: function(xhr) {
-                        if (xhr.status === 422) {
-                            let errors = xhr.responseJSON.errors;
-                            $.each(errors, function(key, val) {
-                                let input = $('[name="' + key + '"]');
-                                input.addClass('is-invalid');
-                                input.after('<div class="invalid-feedback">' + val[0] +
-                                    '</div>');
-                            });
-                        } else {
-                            alert('Terjadi kesalahan server');
-                        }
-                    }
+  <script>
+    $(document).ready(function() {
+      // Inisialisasi validasi
+      $('#form-register').validate({
+        rules: {
+          nama: {
+            required: true,
+            minlength: 3
+          },
+          username: {
+            required: true,
+            minlength: 4
+          },
+          password: {
+            required: true,
+            minlength: 5
+          },
+          password_confirmation: {
+            required: true,
+            equalTo: "#password"
+          }
+        },
+        messages: {
+          nama: {
+            required: "Harap isi nama lengkap",
+            minlength: "Nama minimal 3 karakter"
+          },
+          username: {
+            required: "Harap isi username",
+            minlength: "Username minimal 4 karakter"
+          },
+          password: {
+            required: "Harap isi password",
+            minlength: "Password minimal 5 karakter"
+          },
+          password_confirmation: {
+            required: "Harap konfirmasi password",
+            equalTo: "Password tidak cocok"
+          }
+        },
+        errorElement: 'span',
+        errorPlacement: function(error, element) {
+          error.addClass('invalid-feedback');
+          element.closest('.form-group').append(error);
+        },
+        highlight: function(element, errorClass, validClass) {
+          $(element).addClass('is-invalid');
+          $(element).closest('.form-group').find('label').addClass('text-danger');
+        },
+        unhighlight: function(element, errorClass, validClass) {
+          $(element).removeClass('is-invalid');
+          $(element).closest('.form-group').find('label').removeClass('text-danger');
+        },
+        submitHandler: function(form) {
+            let formData = new FormData(form);
+
+            // Reset error state
+            $('.is-invalid').removeClass('is-invalid');
+            $('.text-danger').removeClass('text-danger');
+            $('.invalid-feedback').remove();
+
+            $.ajax({
+            url: $(form).attr('action'),
+            method: $(form).attr('method'),
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                Swal.fire({
+                icon: 'success',
+                title: 'Registrasi Berhasil',
+                text: response.message || 'Anda akan diarahkan ke halaman login...',
+                timer: 1500,
+                showConfirmButton: false
+                }).then(() => {
+                window.location.href = response.redirect || "{{ route('login') }}";
                 });
+            },
+            error: function(xhr) {
+                if (xhr.status === 422) {
+                let errors = xhr.responseJSON.errors;
+                $.each(errors, function(key, val) {
+                    let input = $('[name="' + key + '"]');
+                    let label = $('label[for="' + key + '"]');
+                    input.addClass('is-invalid');
+                    label.addClass('text-danger');
+                    input.after('<div class="invalid-feedback">' + val[0] + '</div>');
+                });
+                } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Registrasi Gagal',
+                    text: 'Terjadi kesalahan server. Silakan coba lagi.',
+                });
+                }
+            }
             });
-        });
-    </script>
+        }
+      });
+    });
+  </script>
 </body>
 
 
