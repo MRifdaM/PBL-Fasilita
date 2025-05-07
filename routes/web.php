@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PeranController;
+use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\DashboardController;
 
 /*
@@ -44,13 +45,13 @@ Route::middleware(['auth'])->group(function(){
 
         // Pengguna
         Route::prefix('pengguna')->group(function(){
-            Route::get   ('/','PenggunaController@index')->name('pengguna.index');
-            Route::get   ('/list','PenggunaController@list')->name('pengguna.list');
-            Route::get   ('/create','PenggunaController@create')->name('pengguna.create');
-            Route::post  ('/store','PenggunaController@store')->name('pengguna.store');
-            Route::get   ('/edit/{id}','PenggunaController@edit')->name('pengguna.edit');
-            Route::post  ('/update/{id}','PenggunaController@update')->name('pengguna.update');
-            Route::delete('/destroy/{id}','PenggunaController@destroy')->name('pengguna.destroy');
+            Route::get   ('/',[PenggunaController::class, 'index'])->name('pengguna.index');
+            Route::get   ('/list', [PenggunaController::class, 'list'])->name('pengguna.list');
+            Route::get   ('/create',[PenggunaController::class, 'create'])->name('pengguna.create');
+            Route::post  ('/store',[PenggunaController::class, 'store'])->name('pengguna.store');
+            Route::get   ('/edit/{id}',[PenggunaController::class, 'edit'])->name('pengguna.edit');
+            Route::post  ('/update/{id}',[PenggunaController::class, 'update'])->name('pengguna.update');
+            Route::delete('/destroy/{id}',[PenggunaController::class, 'delete'])->name('pengguna.destroy');
         });
 
         // Master Data Fisik: Gedung, Lantai, Ruangan
