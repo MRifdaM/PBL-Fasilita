@@ -44,6 +44,9 @@
 
 
       <div class="main-panel">
+        {{-- partial:partials/_breadcrumb.html --}}
+        @include('partials.breadcrumb')
+
         @yield('content')
 
         <!-- content-wrapper ends -->
