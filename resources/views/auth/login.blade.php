@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Login – FASILITA</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- plugins:css -->
     <link rel="stylesheet" href="{{ asset('assets/vendors/feather/feather.css') }}">
@@ -34,7 +35,7 @@
             <div class="col-md-5 d-flex flex-column justify-content-between">
                 <img src="{{ asset('assets/images/fasilita-logo.png') }}" class="img-fluid" style="max-width: 100px"
                     alt="">
-                <form class="forms-sample pr-5" action="{{ route('login.attempt') }}" method="POST">
+                <form id="form-login" class="forms-sample pr-5" action="{{ route('login.attempt') }}" method="POST">
                     @csrf
                     <div class="my-auto">
                         <div class="text-center my-5">
@@ -149,42 +150,65 @@
     <script src="{{ asset('assets/js/additional-methods.min.js') }}"></script>
     <!-- End custom js for this page-->
 
+    {{-- Sweetalert --}}
+    <script src="{{ asset('assets/vendors/sweetalert2/sweetalert2.all.min.js') }}"></script>
+
     <script>
-        $(document).ready(function () {
-            $('#form-register').on('submit', function (e) {
+        $(function(){
+            $('#form-login').on('submit', function(e){
                 e.preventDefault();
-                let formData = new FormData(this);
-        
-                // Bersihkan error sebelumnya
-                $('.form-control').removeClass('is-invalid');
-                $('.invalid-feedback').remove();
-        
-                $.ajax({
-                    url: $(this).attr('action'),
-                    method: $(this).attr('method'),
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function (response) {
-                        alert('Berhasil disimpan!');
-                        // Redirect atau reset form
-                    },
-                    error: function (xhr) {
-                        if (xhr.status === 422) {
-                            let errors = xhr.responseJSON.errors;
-                            $.each(errors, function (key, val) {
-                                let input = $('[name="' + key + '"]');
-                                input.addClass('is-invalid');
-                                input.after('<div class="invalid-feedback">' + val[0] + '</div>');
-                            });
-                        } else {
-                            alert('Terjadi kesalahan server');
+                let form = $(this), url = form.attr('action');
+                // clear errors
+                form.find('.is-invalid').removeClass('is-invalid');
+                form.find('.invalid-feedback').remove();
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
+                });
+
+                $.ajax({
+                url: url,
+                method: 'POST',
+                data: form.serialize(),
+                success: function(res){
+                    $('#feedbackTitle').text('Sukses');
+                    $('#feedbackMessage').text('Login berhasil, mengalihkan...');
+                    // sukses
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Login Berhasil',
+                        text: 'Mengalihkan...',
+                        showConfirmButton: false,
+                        timer: 1500
+                        }).then(() => {
+                        window.location = res.redirect;
+                    });
+                },
+                error: function(xhr){
+                    if(xhr.status === 422){
+                    let errs = xhr.responseJSON.errors;
+                    $.each(errs, function(field, msgs){
+                        let input = form.find('[name="'+field+'"]');
+                        input.addClass('is-invalid')
+                            .after('<div class="invalid-feedback">'+msgs[0]+'</div>');
+                    });
+                    } else {
+                        $('#feedbackTitle').text('Gagal');
+                        $('#feedbackMessage').text('Terjadi kesalahan server.');
+                        // error umum
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Login Gagal',
+                            text: 'Username atau password salah',
+                        });
                     }
+                }
                 });
             });
         });
-        </script>
+    </script>
 </body>
 
 </html>

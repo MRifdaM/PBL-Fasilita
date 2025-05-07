@@ -17,45 +17,54 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $data = $request->validate([
-            'nama'                  => 'required|string|max:255',
-            'username'              => 'required|string|max:50|unique:pengguna,username',
-            'password'              => 'required|string|min:5|confirmed',
-            'password_confirmation' => 'required|string|min:5|same:password',
+            'nama'=>'required|string|max:255',
+            'username'=>'required|string|unique:pengguna,username',
+            'password'=>'required|string|confirmed|min:5',
         ]);
 
         $roleId = Peran::where('kode_peran','MHS')->value('id_peran');
-
         Pengguna::create([
-            'id_peran' => $roleId,
-            'nama'     => $data['nama'],
-            'username' => $data['username'],
-            'password' => $data['password'], // otomatis di‐hash via cast
+            'id_peran'=>$roleId,
+            'nama'=>$data['nama'],
+            'username'=>$data['username'],
+            'password'=>$data['password'],
         ]);
 
-        return redirect()->route('login')
-                         ->with('success','Registrasi berhasil! Silakan login.');
+        return response()->json([
+            'status'=>true,
+            'message'=>'Registrasi berhasil',
+            'redirect'=>route('login')
+        ]);
     }
 
     public function showLogin()
     {
-        return view('auth.login');
+        if(Auth::check()){
+            return redirect('/');
+        } else {
+            return view('auth.login');
+        }
     }
 
     public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'username' => 'required|string',
-            'password' => 'required|string',
+        $c = $request->validate([
+            'username'=>'required|string',
+            'password'=>'required|string',
         ]);
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::guard('web')->attempt($c, $request->boolean('remember'))) {
             $request->session()->regenerate();
-            return redirect()->intended('/');
+            return response()->json([
+                'status'=>true,
+                'redirect'=>url('/')
+            ]);
         }
 
-        return back()
-            ->withErrors(['username' => 'Username atau password salah'])
-            ->onlyInput('username');
+        return response()->json([
+            'status'=>false,
+            'errors'=>['username'=>'Username atau password salah']
+        ],422);
     }
 
     public function logout(Request $request)
