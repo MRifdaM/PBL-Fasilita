@@ -1,114 +1,182 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
+
+      {{-- Dashboard (accessible to all users) --}}
       <li class="nav-item">
-        <a class="nav-link" href="/">
+        <a class="nav-link" href="{{ route('dashboard') }}">
           <i class="icon-grid menu-icon"></i>
           <span class="menu-title">Dashboard</span>
         </a>
       </li>
+
+      {{-- ============================= --}}
+      {{-- ADMIN MENU                    --}}
+      {{-- ============================= --}}
+      @if(auth()->user()->hasRole('ADM'))
+        {{-- User Management --}}
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="collapse" href="#user-management" aria-expanded="false">
+            <i class="icon-people menu-icon"></i>
+            <span class="menu-title">Manajemen Pengguna</span>
+            <i class="menu-arrow"></i>
+          </a>
+          <div class="collapse" id="user-management">
+            <ul class="nav flex-column sub-menu">
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('peran.index') }}">Peran & Hak Akses</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('pengguna.index') }}">Daftar Pengguna</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        {{-- Facility Management --}}
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="collapse" href="#facility-management" aria-expanded="false">
+            <i class="icon-home menu-icon"></i>
+            <span class="menu-title">Manajemen Fasilitas</span>
+            <i class="menu-arrow"></i>
+          </a>
+          <div class="collapse" id="facility-management">
+            <ul class="nav flex-column sub-menu">
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('gedung.index') }}">Gedung</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('lantai.index') }}">Lantai</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('ruangan.index') }}">Ruangan</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('fasilitas.index') }}">Fasilitas</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        {{-- Master Data --}}
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="collapse" href="#master-data" aria-expanded="false">
+            <i class="icon-layers menu-icon"></i>
+            <span class="menu-title">Master Data</span>
+            <i class="menu-arrow"></i>
+          </a>
+          <div class="collapse" id="master-data">
+            <ul class="nav flex-column sub-menu">
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('kategoriF.index') }}">Kategori Fasilitas</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('kategoriK.index') }}">Kategori Kerusakan</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('status.index') }}">Status Laporan</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        {{-- SPK & Criteria --}}
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="collapse" href="#spk-management" aria-expanded="false">
+            <i class="icon-calculator menu-icon"></i>
+            <span class="menu-title">SPK & Kriteria</span>
+            <i class="menu-arrow"></i>
+          </a>
+          <div class="collapse" id="spk-management">
+            <ul class="nav flex-column sub-menu">
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('kriteria.index') }}">Kriteria Penilaian</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('skoring.index') }}">Skoring Kriteria</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+      @endif
+
+      {{-- ============================= --}}
+      {{-- ADMIN & SARPRAS MENU          --}}
+      {{-- ============================= --}}
+      @if(auth()->user()->hasAnyRole(['ADM','SPR']))
       <li class="nav-item">
-        <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-          <i class="icon-layout menu-icon"></i>
-          <span class="menu-title">UI Elements</span>
-          <i class="menu-arrow"></i>
+        {{-- <a class="nav-link" href="{{ route('verifikasi.index') }}"> --}}
+          <i class="fas fa-clipboard-check"></i> <!-- Ganti ikon di sini -->
+          <span class="menu-title">Verifikasi Laporan</span>
         </a>
-        <div class="collapse" id="ui-basic">
-          <ul class="nav flex-column sub-menu">
-            <li class="nav-item"> <a class="nav-link" href="/buttons">Buttons</a></li>
-            <li class="nav-item"> <a class="nav-link" href="/dropdowns">Dropdowns</a></li>
-            <li class="nav-item"> <a class="nav-link" href="/typography">Typography</a></li>
-          </ul>
-        </div>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
-          <i class="icon-columns menu-icon"></i>
-          <span class="menu-title">Form elements</span>
-          <i class="menu-arrow"></i>
-        </a>
-        <div class="collapse" id="form-elements">
-          <ul class="nav flex-column sub-menu">
-            <li class="nav-item"><a class="nav-link" href="/forms">Basic Elements</a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
-          <i class="icon-bar-graph menu-icon"></i>
-          <span class="menu-title">Charts</span>
-          <i class="menu-arrow"></i>
-        </a>
-        <div class="collapse" id="charts">
-          <ul class="nav flex-column sub-menu">
-            <li class="nav-item"> <a class="nav-link" href="/chart">ChartJs</a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-toggle="collapse" href="#tables" aria-expanded="false" aria-controls="tables">
-          <i class="icon-grid-2 menu-icon"></i>
-          <span class="menu-title">Tables</span>
-          <i class="menu-arrow"></i>
-        </a>
-        <div class="collapse" id="tables">
-          <ul class="nav flex-column sub-menu">
-            <li class="nav-item"> <a class="nav-link" href="/table">Basic table</a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-toggle="collapse" href="#icons" aria-expanded="false" aria-controls="icons">
-          <i class="icon-contract menu-icon"></i>
-          <span class="menu-title">Icons</span>
-          <i class="menu-arrow"></i>
-        </a>
-        <div class="collapse" id="icons">
-          <ul class="nav flex-column sub-menu">
-            <li class="nav-item"> <a class="nav-link" href="/icons">Mdi icons</a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-          <i class="icon-head menu-icon"></i>
-          <span class="menu-title">User Pages</span>
-          <i class="menu-arrow"></i>
-        </a>
-        <div class="collapse" id="auth">
-          <ul class="nav flex-column sub-menu">
-            <li class="nav-item"> <a class="nav-link" href="/login"> Login </a></li>
-            <li class="nav-item"> <a class="nav-link" href="/register"> Register </a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-toggle="collapse" href="#error" aria-expanded="false" aria-controls="error">
-          <i class="icon-ban menu-icon"></i>
-          <span class="menu-title">Error pages</span>
-          <i class="menu-arrow"></i>
-        </a>
-        <div class="collapse" id="error">
-          <ul class="nav flex-column sub-menu">
-            <li class="nav-item"> <a class="nav-link" href="/erro404"> 404 </a></li>
-            <li class="nav-item"> <a class="nav-link" href="/erro500"> 500 </a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="https://github.com/M-Hidayatullah" target="_blank">
-          <i class="icon-paper menu-icon"></i>
-          <span class="menu-title">Author</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{ route('logout') }}"
+    @endif
+
+      {{-- ============================= --}}
+      {{-- SARPRAS MENU                  --}}
+      {{-- ============================= --}}
+      @if(auth()->user()->hasRole('SPR'))
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="collapse" href="#task-management" aria-expanded="false">
+            <i class="icon-wrench menu-icon"></i>
+            <span class="menu-title">Manajemen Tugas</span>
+            <i class="menu-arrow"></i>
+          </a>
+          <div class="collapse" id="task-management">
+            <ul class="nav flex-column sub-menu">
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('spk.topsis') }}">SPK TOPSIS</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('penugasan.index') }}">Penugasan Teknisi</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+      @endif
+
+      {{-- ============================= --}}
+      {{-- EXTERNAL USER MENU (MHS/DSN/TDK) --}}
+      {{-- ============================= --}}
+      @if(auth()->user()->hasAnyRole(['MHS','DSN','TDK']))
+        <li class="nav-item">
+          <a class="nav-link" href="{{ route('laporan.create') }}">
+            <i class="icon-note menu-icon"></i>
+            <span class="menu-title">Buat Laporan</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ route('laporan.index') }}">
+            <i class="icon-clock menu-icon"></i>
+            <span class="menu-title">Riwayat Laporan</span>
+          </a>
+        </li>
+      @endif
+
+      {{-- ============================= --}}
+      {{-- TECHNICIAN MENU               --}}
+      {{-- ============================= --}}
+      @if(auth()->user()->hasRole('TNS'))
+        <li class="nav-item">
+          <a class="nav-link" href="{{ route('tugas.index') }}">
+            <i class="icon-wrench menu-icon"></i>
+            <span class="menu-title">Daftar Tugas</span>
+          </a>
+        </li>
+      @endif
+
+      {{-- ============================= --}}
+      {{-- LOGOUT                        --}}
+      {{-- ============================= --}}
+      <li class="nav-item mt-4">
+        <a class="nav-link text-danger" href="#"
            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
           <i class="icon-power menu-icon"></i>
-          <span class="menu-title">Logout</span>
+          <span class="menu-title">Keluar</span>
         </a>
-        <form id="logout-form" action="{{ route('logout') }}" method="GET" style="display: none;">
-            @csrf
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display:none;">
+          @csrf
         </form>
       </li>
+
     </ul>
   </nav>

@@ -41,6 +41,12 @@ class Pengguna extends Authenticatable
         return $this->peran->kode_peran === $role;
     }
 
+    public function hasAnyRole(array $daftarKodePeran): bool
+    {
+        return in_array(optional($this->peran)->kode_peran, $daftarKodePeran, true);
+    }
+
+    //relasi
     public function peran(): BelongsTo
     {
         return $this->belongsTo(Peran::class, 'id_peran');

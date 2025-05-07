@@ -13,8 +13,13 @@ class PeranController extends Controller
      */
     public function index()
     {
+        $breadcrumbs = [
+            ['title' => 'Dashboard', 'url' => route('dashboard')],
+            ['title' => 'Halaman Peran', 'url' => route('peran.index')]
+        ];
+
         $activeMenu = 'peran';
-        return view('peran.index', compact('activeMenu'));
+        return view('peran.index', compact('activeMenu', 'breadcrumbs'));
     }
 
     public function list(){
