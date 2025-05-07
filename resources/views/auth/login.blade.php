@@ -150,8 +150,7 @@
     <script src="{{ asset('assets/js/additional-methods.min.js') }}"></script>
     <!-- End custom js for this page-->
 
-    {{-- Sweetalert --}}
-    <script src="{{ asset('assets/vendors/sweetalert2/sweetalert2.all.min.js') }}"></script>
+    
 
     <script>
         $(function(){

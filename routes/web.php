@@ -38,7 +38,7 @@ Route::middleware(['auth'])->group(function(){
             Route::get('/create', [PeranController::class, 'create'])->name('peran.create');
             Route::post('/store', [PeranController::class, 'store'])->name('peran.store');
             Route::get('/edit/{id}', [PeranController::class, 'edit'])->name('peran.edit');
-            Route::post('/update/{id}', [PeranController::class, 'update'])->name('peran.update');
+            Route::put ('/update/{id}', [PeranController::class, 'update'])->name('peran.update');
             Route::get('/delete/{id}', [PeranController::class, 'delete'])->name('peran.delete');
             Route::delete('/destroy/{id}', [PeranController::class, 'destroy'])->name('peran.destroy');
         });
@@ -118,4 +118,8 @@ Route::middleware(['auth'])->group(function(){
             Route::delete('/destroy/{id}','SkoringKriteriaController@destroy')->name('skoring.destroy');
         });
     });
+});
+
+Route::get('/icons', function () {
+    return view('pages.icons.index');
 });

@@ -32,6 +32,9 @@ class PeranController extends Controller
                     <button onclick="modalAction(\'' . url('/peran/edit/' . $row->id_peran) . '\')" type="button" class="btn btn-warning btn-sm btn-edit">
                         <i class="mdi mdi-pencil"></i>
                     </button>
+                    <button onclick="modalAction(\'' . url('/peran/show/' . $row->id_peran) . '\')" type="button" class="btn btn-info btn-sm btn-edit">
+                        <i class="mdi mdi-file-document-box"></i>
+                    </button>
                     <button onclick="modalAction(\'' . url('/peran/delete/' . $row->id_peran) . '\')" type="button" class="btn btn-danger btn-sm btn-delete" data-id="'.$row->id_peran.'">
                         <i class="mdi mdi-delete"></i>
                     </button>
@@ -85,8 +88,12 @@ class PeranController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
+        $peran = Peran::find($id);
+        return view('peran.show',[
+            'peran' => $peran
+        ]);
     }
 
     /**
@@ -103,9 +110,40 @@ class PeranController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        // cek apakah request dari ajax 
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'kode_peran' => 'required|string|min:3|unique:peran,kode_peran,'.$id.',id_peran',
+                'nama_peran' => 'required|string|max:100',
+            ];
+            // use Illuminate\Support\Facades\Validator; 
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status'   => false,    // respon json, true: berhasil, false: gagal 
+                    'message'  => 'Validasi gagal.',
+                    'msgField' => $validator->errors()  // menunjukkan field mana yang error 
+                ]);
+            }
+
+            $check = Peran::find($id);
+            if ($check) {
+                $check->update($request->all());
+                return response()->json([
+                    'status'  => true,
+                    'message' => 'Data berhasil diupdate'
+                ]);
+            } else {
+                return response()->json([
+                    'status'  => false,
+                    'message' => 'Data tidak ditemukan'
+                ]);
+            }
+        }
+        redirect('/');
     }
 
     /**
@@ -122,8 +160,23 @@ class PeranController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, $id)
     {
-        
+        if ($request->ajax() || $request->wantsJson()) {
+            $peran = Peran::find($id);
+            if ($peran) {
+                $peran->delete();
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data berhasil dihapus'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data tidak ditemukan'
+                ]);
+            }
+        }
+        redirect('/');
     }
 }
