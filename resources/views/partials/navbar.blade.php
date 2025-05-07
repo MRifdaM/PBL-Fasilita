@@ -68,11 +68,15 @@
             </a>
           </div>
         </li>
-        <li class="nav-item nav-profile dropdown">
+        {{-- <li class="nav-item nav-profile dropdown">
           <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
             <img src="{{ asset('assets/images/faces/face28.jpg') }}" alt="profile"/>
           </a>
           <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+            <a class="dropdown-item nav-settings">
+              <i class="ti-settings text-primary"></i>
+              Profil
+            </a>
             <a class="dropdown-item">
               <i class="ti-settings text-primary"></i>
               Settings
@@ -82,10 +86,10 @@
               Logout
             </a>
           </div>
-        </li>
+        </li> --}}
         <li class="nav-item nav-settings d-none d-lg-flex">
-          <a class="nav-link" href="#">
-            <i class="icon-ellipsis"></i>
+          <a class="nav-link" href="#" >
+            <img src="{{ asset('assets/images/faces/face28.jpg') }}" alt="profile" style="max-height: 40px"/>
           </a>
         </li>
       </ul>
