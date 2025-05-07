@@ -39,6 +39,7 @@ Route::middleware(['auth'])->group(function(){
             Route::post('/store', [PeranController::class, 'store'])->name('peran.store');
             Route::get('/edit/{id}', [PeranController::class, 'edit'])->name('peran.edit');
             Route::post('/update/{id}', [PeranController::class, 'update'])->name('peran.update');
+            Route::get('/delete/{id}', [PeranController::class, 'delete'])->name('peran.delete');
             Route::delete('/destroy/{id}', [PeranController::class, 'destroy'])->name('peran.destroy');
         });
 

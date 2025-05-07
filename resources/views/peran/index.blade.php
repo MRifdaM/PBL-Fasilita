@@ -3,8 +3,13 @@
 @section('content')
     <div class="w-100 grid-margin stretch-card">
         <div class="card">
-            <div class="card-body">
-                <h4 class="card-title">Data Peran</h4>
+            <div class="card-body w-auto">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="card-title my-5 w-25">Data Peran</h3>
+                    <button class="btn btn-primary h-25 w-25" onclick="modalAction('{{ url('peran/create') }}')">
+                        Tambah Peran
+                    </button>
+                </div>
                 <div class="table-responsive">
                     @if (session('success'))
                         <div class="alert alert-success">{{ session('success') }}</div>
@@ -26,20 +31,30 @@
             </div>
         </div>
     </div>
+    <div id="myModal" class="modal fade animate shake" tabindex="-1" role="dialog" data-backdrop="static"
+        data-keyboard="false" data-width="75%" aria-hidden="true">
+    </div>
 @endsection
 
 @push('css')
+
 @endpush
 
 @push('js')
     <script>
-        var tablePerang;
+        function modalAction(url = '') {
+            $('#myModal').load(url, function() {
+                $('#myModal').modal('show');
+            });
+        }
+
+        var tablePeran;
         $(document).ready(function() {
-            tablePerang = $('#table-peran').DataTable({
+            tablePeran = $('#table-peran').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    "url":"{{ url('peran/list') }}",
+                    "url": "{{ url('peran/list') }}",
                     "dataType": "json",
                     "type": "GET"
                 },
