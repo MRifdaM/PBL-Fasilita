@@ -29,4 +29,11 @@ Route::get('/logout', [AuthController::class,'logout'])->name('logout');
 
 Route::middleware(['auth'])->group(function(){
     Route::get('/', [DashboardController::class, 'index']);
+
+    Route::middleware(['role:admin'])->group(function(){
+        Route::prefix('peran')->group(function () {
+            Route::get('/', [PeranController::class, 'index'])->name('peran.index');
+            Route::get('/list', [PeranController::class, 'list'])->name('peran.list');
+        });
+    });
 });

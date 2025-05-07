@@ -61,12 +61,14 @@
   <!-- plugins:js -->
   <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>
   <!-- endinject -->
+
+  <script src="{{ asset('assets/js/jquery-3.7.1.min.js') }}"></script>
+
   <!-- Plugin js for this page -->
   <script src="{{ asset('assets/vendors/chart.js/Chart.min.js') }}"></script>
   <script src="{{ asset('assets/vendors/datatables.net/jquery.dataTables.js') }}"></script>
   <script src="{{ asset('assets/vendors/datatables.net-bs4/dataTables.bootstrap4.js') }}"></script>
   <script src="{{ asset('assets/js/dataTables.select.min.js') }}"></script>
-  <script src="{{ asset('assets/js/jquery-3.7.1.min.js') }}"></script>
   <script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
   <script src="{{ asset('assets/js/additional-methods.min.js') }}"></script>
 
@@ -99,6 +101,8 @@
   <script src="{{ asset('assets/js/dashboard.js') }}"></script>
   <script src="{{ asset('assets/js/Chart.roundedBarCharts.js') }}"></script>
   <!-- End custom js for this page-->
+  @stack('js')
+
 </body>
 
 </html>
