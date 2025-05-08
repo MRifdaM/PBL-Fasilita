@@ -12,8 +12,15 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class Pengguna extends Authenticatable
 {
     use HasFactory;
+
     protected $table = 'pengguna';
     protected $primaryKey = 'id_pengguna';
+
+    // 1) Default kolom foto_profil jika null
+    protected $attributes = [
+        'foto_profil' => 'default.jpg',
+    ];
+
     protected $fillable = [
         'id_peran',
         'username',
@@ -30,6 +37,12 @@ class Pengguna extends Authenticatable
     protected $casts = [
         'password' => 'hashed',
     ];
+
+    // 2) Accessor untuk URL foto profil
+    public function getFotoProfilUrlAttribute(): string
+    {
+        return asset('storage/foto/' . $this->foto_profil);
+    }
 
     public function getRole(): string
     {
