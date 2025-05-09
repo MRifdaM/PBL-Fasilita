@@ -26,7 +26,7 @@ Route::get('/register', [AuthController::class,'showRegister'])->name('register'
 Route::post('/register', [AuthController::class,'register'])->name('register.store');
 Route::get('/login',    [AuthController::class,'showLogin'])->name('login');
 Route::post('/login',   [AuthController::class,'login'])->name('login.attempt');
-Route::get('/logout', [AuthController::class,'logout'])->name('logout');
+Route::post('/logout', [AuthController::class,'logout'])->name('logout');
 
 Route::middleware(['auth'])->group(function(){
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
@@ -49,10 +49,16 @@ Route::middleware(['auth'])->group(function(){
             Route::get   ('/',[PenggunaController::class, 'index'])->name('pengguna.index');
             Route::get   ('/list', [PenggunaController::class, 'list'])->name('pengguna.list');
             Route::get   ('/create',[PenggunaController::class, 'create'])->name('pengguna.create');
+            Route::get   ('/show/{id}',[PenggunaController::class, 'show'])->name('pengguna.show');
             Route::post  ('/store',[PenggunaController::class, 'store'])->name('pengguna.store');
             Route::get   ('/edit/{id}',[PenggunaController::class, 'edit'])->name('pengguna.edit');
-            Route::post  ('/update/{id}',[PenggunaController::class, 'update'])->name('pengguna.update');
-            Route::delete('/destroy/{id}',[PenggunaController::class, 'delete'])->name('pengguna.destroy');
+            Route::put  ('/update/{id}',[PenggunaController::class, 'update'])->name('pengguna.update');
+            Route::get   ('/delete/{id}',[PenggunaController::class, 'confirm'])->name('pengguna.delete');
+            Route::delete('/destroy/{id}',[PenggunaController::class, 'destroy'])->name('pengguna.destroy');
+            Route::get  ('/import',      [PenggunaController::class, 'import'])->name('pengguna.import');
+            Route::post ('/import_ajax', [PenggunaController::class, 'importAjax'])->name('pengguna.import_ajax');
+            Route::get  ('/export_excel', [PenggunaController::class, 'exportExcel'])->name('pengguna.export_excel');
+            Route::get  ('/export_pdf',   [PenggunaController::class, 'exportPdf'])->name('pengguna.export_pdf');
         });
 
         // Master Data Fisik: Gedung, Lantai, Ruangan
