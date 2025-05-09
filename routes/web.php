@@ -1,10 +1,13 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PeranController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\DashboardController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +31,8 @@ Route::get('/login',    [AuthController::class,'showLogin'])->name('login');
 Route::post('/login',   [AuthController::class,'login'])->name('login.attempt');
 Route::post('/logout', [AuthController::class,'logout'])->name('logout');
 
+
+
 Route::middleware(['auth'])->group(function(){
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -39,7 +44,7 @@ Route::middleware(['auth'])->group(function(){
             Route::get('/create', [PeranController::class, 'create'])->name('peran.create');
             Route::post('/store', [PeranController::class, 'store'])->name('peran.store');
             Route::get('/edit/{id}', [PeranController::class, 'edit'])->name('peran.edit');
-            Route::post('/update/{id}', [PeranController::class, 'update'])->name('peran.update');
+            Route::put ('/update/{id}', [PeranController::class, 'update'])->name('peran.update');
             Route::get('/delete/{id}', [PeranController::class, 'delete'])->name('peran.delete');
             Route::delete('/destroy/{id}', [PeranController::class, 'destroy'])->name('peran.destroy');
         });
@@ -125,4 +130,19 @@ Route::middleware(['auth'])->group(function(){
             Route::delete('/destroy/{id}','SkoringKriteriaController@destroy')->name('skoring.destroy');
         });
     });
+
+    Route::prefix('profile')->group(function () {
+        Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
+        Route::get('/edit', [ProfileController::class, 'edit'])->name('profile.edit'); // <== Tambahan ini
+        Route::post('/update-photo', [ProfileController::class, 'update_photo'])->name('profile.update_photo');
+        Route::post('/update-info', [ProfileController::class, 'update_info'])->name('profile.update_info');
+        Route::post('/update-password', [ProfileController::class, 'update_password'])->name('profile.update_password');
+    });
+    
+    
+
+});
+
+Route::get('/icons', function () {
+    return view('pages.icons.index');
 });
