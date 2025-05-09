@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="{{ asset('assets/vendors/feather/feather.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendors/ti-icons/css/themify-icons.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.base.css') }}">
+   <!-- Font Awesome -->
+   <link rel="stylesheet" href="{{ asset('assets/vendors/fontawesome-free/css/all.min.css') }}">
 
   <!-- endinject -->
   <!-- Plugin css for this page -->
@@ -46,9 +48,12 @@
 
       <div class="main-panel">
         {{-- partial:partials/_breadcrumb.html --}}
-        @include('partials.breadcrumb')
+        <div class="content-wrapper">
+            @includeWhen(View::exists('partials.breadcrumb'), 'partials.breadcrumb')
 
-        @yield('content')
+            {{-- Page Content --}}
+            @yield('content')
+        </div>
 
         <!-- content-wrapper ends -->
 
@@ -76,6 +81,8 @@
   <script src="{{ asset('assets/js/dataTables.select.min.js') }}"></script>
   <script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
   <script src="{{ asset('assets/js/additional-methods.min.js') }}"></script>
+    {{-- Sweetalert --}}
+    <script src="{{ asset('assets/vendors/sweetalert2/sweetalert2.all.min.js') }}"></script>
 
   <!-- End plugin js for this page -->
   <!-- inject:js -->
