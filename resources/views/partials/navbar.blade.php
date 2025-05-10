@@ -4,9 +4,9 @@
       <a class="navbar-brand brand-logo-mini" href="/"><img src="{{ asset('assets/images/logo-mini.svg') }}" alt="logo"/></a>
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-      <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+      {{-- <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
         <span class="icon-menu"></span>
-      </button>
+      </button> --}}
       <ul class="navbar-nav mr-lg-2">
         <li class="nav-item nav-search d-none d-lg-block">
           <div class="input-group">
@@ -88,11 +88,16 @@
             </a>
           </div>
         </li> --}}
-        <li class="nav-item nav-settings d-none d-lg-flex">
+        <li class="nav-item d-none d-lg-flex bg-transparent">
+          <a class="nav-link" href="{{ route('profile.index') }}" >
+            <img src="{{ $authUser->foto_profile ? asset('foto/' . $authUser->foto_profile) : asset('foto/default.jpg') }}" class="rounded-circle" alt="profile" style="max-height: 40px"/>
+          </a>
+        </li>
+        {{-- <li class="nav-item nav-settings d-none d-lg-flex">
           <a class="nav-link" href="#" >
             <img src="{{ asset('assets/images/faces/face28.jpg') }}" alt="profile" style="max-height: 40px"/>
           </a>
-        </li>
+        </li> --}}
       </ul>
       <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
         <span class="icon-menu"></span>

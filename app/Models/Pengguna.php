@@ -16,9 +16,9 @@ class Pengguna extends Authenticatable
     protected $table = 'pengguna';
     protected $primaryKey = 'id_pengguna';
 
-    // 1) Default kolom foto_profil jika null
+    // 1) Default kolom foto_profile jika null
     protected $attributes = [
-        'foto_profil' => 'default.jpg',
+        'foto_profile' => 'default.jpg',
     ];
 
     protected $fillable = [
@@ -26,7 +26,7 @@ class Pengguna extends Authenticatable
         'username',
         'nama',
         'password',
-        'foto_profil',
+        'foto_profile',
     ];
 
     protected $hidden = [
@@ -41,7 +41,7 @@ class Pengguna extends Authenticatable
     // 2) Accessor untuk URL foto profil
     public function getFotoProfilUrlAttribute(): string
     {
-        return asset('storage/foto/' . $this->foto_profil);
+        return asset('storage/foto/' . $this->foto_profile);
     }
 
     public function getRole(): string

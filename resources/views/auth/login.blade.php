@@ -43,24 +43,25 @@
                             <h6>Sistem pelaporan dan perbaikan fasilitas kampus yang cepat dan terpercaya.</h6>
                         </div>
                         <div class="form-group">
-                        <label for="username">Username</label>
-                        <input type="text" class="form-control @error('username') is-invalid @enderror" name="username" id="username" placeholder="Username">
-                        @error('username')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control @error('username') is-invalid @enderror"
+                                name="username" id="username" placeholder="Username">
+                            @error('username')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control @error('password') is-invalid @enderror"
+                                name="password" id="password" placeholder="Password">
+                            @error('password')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Login</button>
+                        {{-- <button class="btn btn-light">Cancel</button> --}}
+                        <p class="mt-3">Belum punya akun? <a href="{{ url('/register') }}">register</a></p>
                     </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" id="password"
-                        placeholder="Password">
-                        @error('password')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Login</button>
-                    {{-- <button class="btn btn-light">Cancel</button> --}}
-                    <p class="mt-3">Belum punya akun? <a href="{{ url('/register') }}">register</a></p>
-                </div>
                 </form>
                 <div>
 
@@ -71,17 +72,18 @@
                 <div class="d-flex flex-column h-100 justify-content-between">
                     <div class="d-flex flex-row justify-content-between h-25">
                         <div class="w-50 px-4">
-                            <div class="d-flex justify-content-around align-items-center border border-white text-white py-1 px-2 mt-5 w-100" style="border-radius: 30px 30px">
-                                <button type="button" class="btn btn-light btn-rounded btn-icon font-weight-bold" style="color: #4B49AC">
+                            <div class="d-flex justify-content-around align-items-center border border-white text-white py-1 px-2 mt-5 w-100"
+                                style="border-radius: 30px 30px">
+                                <button type="button" class="btn btn-light btn-rounded btn-icon font-weight-bold"
+                                    style="color: #4B49AC">
                                     <h3 class="m-0 font-weight-bold">?</h3>
-                                  </button>
+                                </button>
                                 <h5 class="m-0">
                                     Jangan abaikan kerusakan.
                                 </h5>
                             </div>
                         </div>
-                        <div class="bg-white w-50 pl-3 "
-                            style="border-radius: 0 0 0 30px; margin-top: -1px; ">
+                        <div class="bg-white w-50 pl-3 " style="border-radius: 0 0 0 30px; margin-top: -1px; ">
                             <div class="stretch-card transparent h-100 pb-3">
                                 <div class="card card-dark-blue" style="border-radius: 0 30px 0 30px;">
                                     <div class="card-body d-flex flex-column justify-content-end">
@@ -96,12 +98,12 @@
                     <div class="w-100">
                         <div class="col-md-6 grid-margin stretch-card">
                             <div class="card">
-                              <div class="card-body text-center">
-                                <h4>Temukan Masalah di Sekitarmu?</h4>
-                                <p>Sudah 124 mahasiswa menggunakan FASILITA minggu ini!</p>
-                              </div>
+                                <div class="card-body text-center">
+                                    <h4>Temukan Masalah di Sekitarmu?</h4>
+                                    <p>Sudah 124 mahasiswa menggunakan FASILITA minggu ini!</p>
+                                </div>
                             </div>
-                          </div>
+                        </div>
                         <div class="col-md-7"></div>
                     </div>
                 </div>
@@ -138,7 +140,8 @@
     <script src="{{ asset('assets/js/settings.js') }}"></script>
     <script src="{{ asset('assets/js/todolist.js') }}"></script>
     <!-- endinject -->
-
+    {{-- Sweetalert --}}
+    <script src="{{ asset('assets/vendors/sweetalert2/sweetalert2.all.min.js') }}"></script>
     <!-- Custom js for this page-->
     <script src="{{ asset('assets/js/chart.js') }}"></script>
     <!-- endinject -->
@@ -150,61 +153,81 @@
     <script src="{{ asset('assets/js/additional-methods.min.js') }}"></script>
     <!-- End custom js for this page-->
 
-    
+
 
     <script>
-        $(function(){
-            $('#form-login').on('submit', function(e){
-                e.preventDefault();
-                let form = $(this), url = form.attr('action');
-                // clear errors
-                form.find('.is-invalid').removeClass('is-invalid');
-                form.find('.invalid-feedback').remove();
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                });
-
-                $.ajax({
-                url: url,
-                method: 'POST',
-                data: form.serialize(),
-                success: function(res){
-                    $('#feedbackTitle').text('Sukses');
-                    $('#feedbackMessage').text('Login berhasil, mengalihkan...');
-                    // sukses
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Login Berhasil',
-                        text: 'Mengalihkan...',
-                        showConfirmButton: false,
-                        timer: 1500
-                        }).then(() => {
-                        window.location = res.redirect;
-                    });
-                },
-                error: function(xhr){
-                    if(xhr.status === 422){
-                    let errs = xhr.responseJSON.errors;
-                    $.each(errs, function(field, msgs){
-                        let input = form.find('[name="'+field+'"]');
-                        input.addClass('is-invalid')
-                            .after('<div class="invalid-feedback">'+msgs[0]+'</div>');
-                    });
-                    } else {
-                        $('#feedbackTitle').text('Gagal');
-                        $('#feedbackMessage').text('Terjadi kesalahan server.');
-                        // error umum
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Login Gagal',
-                            text: 'Username atau password salah',
-                        });
+        $(document).ready(function() {
+            $("#form-login").validate({
+                rules: {
+                    username: {
+                        required: true,
+                        minlength: 4,
+                        maxlength: 20
+                    },
+                    password: {
+                        required: true,
+                        minlength: 5,
+                        maxlength: 20
                     }
+                },
+                messages: {
+                    username: {
+                        required: "Harap isi username",
+                        minlength: "Username minimal 4 karakter"
+                    },
+                    password: {
+                        required: "Harap isi password",
+                        minlength: "Password minimal 5 karakter"
+                    }
+                },
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                    $(element).closest('.form-group').find('label').addClass('text-danger');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                    $(element).closest('.form-group').find('label').removeClass('text-danger');
+                },
+                submitHandler: function(form) { // ketika valid, maka bagian yg akan dijalankan
+                    $.ajax({
+                        url: form.action,
+                        type: form.method,
+                        data: $(form).serialize(),
+                        success: function(response) {
+                            if (response.status) { // jika sukses
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil',
+                                    text: response.message,
+                                }).then(function() {
+                                    window.location = response.redirect;
+                                });
+                            } else { // jika error
+                                $('.error-text').text('');
+                                $.each(response.msgField, function(prefix, val) {
+                                    $('#error-' + prefix).text(val[0]);
+                                });
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Terjadi Kesalahan',
+                                    text: response.message
+                                });
+                            }
+                        }
+                    });
+                    return false;
                 }
-                });
             });
         });
     </script>

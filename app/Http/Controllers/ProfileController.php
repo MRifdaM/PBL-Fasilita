@@ -36,7 +36,7 @@ class ProfileController extends Controller
     public function update_photo(Request $request)
     {
         $request->validate([
-            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'foto' => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         $user = Pengguna::find(Auth::id());
@@ -46,17 +46,17 @@ class ProfileController extends Controller
         }
 
         // Hapus foto lama jika ada
-        if ($user->foto_profil && Storage::exists('public/foto/' . $user->foto_profil)) {
-            Storage::delete('public/foto/' . $user->foto_profil);
-        }
+        // if ($user->foto_profile && Storage::exists('public/foto/' . $user->foto_profile)) {
+        //     Storage::delete('public/foto/' . $user->foto_profile);
+        // }
 
         // Simpan foto baru
         $file = $request->file('foto');
         $filename = time() . '_' . $file->getClientOriginalName();
-        $file->storeAs('public/foto', $filename);
+        $file->move(public_path('foto'), $filename);
 
         // Simpan nama file ke kolom foto_profil
-        $user->foto_profil = $filename;
+        $user->foto_profile = $filename;
         $user->save();
 
         return redirect()->back()->with('success', 'Foto profil berhasil diperbarui.');
@@ -67,7 +67,8 @@ class ProfileController extends Controller
         $request->validate([
             'username'      => 'required|string|max:255',
             'nama'          => 'required|string|max:255',
-            'new_password'  => 'nullable|min:6|confirmed',
+            'new_password'  => 'nullable|min:5',
+            'confirm_password'  => 'required|min:5|same:new_password',
         ]);
 
         $user = Pengguna::find(Auth::id());

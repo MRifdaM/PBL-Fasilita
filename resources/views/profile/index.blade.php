@@ -8,7 +8,7 @@
         <div class="card-body text-center">
           <h4 class="card-title">Profil Saya</h4>
 
-          <img src="{{ asset('foto/' . ($user->foto_profil ?? 'default.jpg')) }}"
+          <img src="{{ $user->foto_profile ? asset('foto/' . $user->foto_profile) : asset('foto/default.jpg') }}"
                class="rounded-circle mb-3"
                width="100"
                alt="Foto Profil">

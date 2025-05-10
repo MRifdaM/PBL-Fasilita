@@ -29,7 +29,7 @@ Route::get('/register', [AuthController::class,'showRegister'])->name('register'
 Route::post('/register', [AuthController::class,'register'])->name('register.store');
 Route::get('/login',    [AuthController::class,'showLogin'])->name('login');
 Route::post('/login',   [AuthController::class,'login'])->name('login.attempt');
-Route::post('/logout', [AuthController::class,'logout'])->name('logout');
+Route::get('/logout', [AuthController::class,'logout'])->name('logout');
 
 
 
@@ -137,12 +137,12 @@ Route::middleware(['auth'])->group(function(){
         Route::post('/update-photo', [ProfileController::class, 'update_photo'])->name('profile.update_photo');
         Route::post('/update-info', [ProfileController::class, 'update_info'])->name('profile.update_info');
         Route::post('/update-password', [ProfileController::class, 'update_password'])->name('profile.update_password');
-    });
-    
-    
-
+    }); 
 });
 
 Route::get('/icons', function () {
+    return view('pages.icons.index');
+});
+Route::get('/forms', function () {
     return view('pages.icons.index');
 });

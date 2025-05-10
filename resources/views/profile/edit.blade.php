@@ -18,11 +18,14 @@
               <div class="form-group">
                   <label>Foto saat ini:</label><br>
                   <!-- Menampilkan foto profil dengan fallback default jika NULL -->
-                  <img src="{{ asset('foto/' . ($user->foto_profil ?? 'default.jpg')) }}" 
+                  <img src="{{ $user->foto_profile ? asset('foto/' . $user->foto_profile) : asset('foto/default.jpg') }}" 
                        alt="Foto Profil"
-                       class="img-thumbnail mb-2 rounded"
+                       class="rounded-circle img-fluid mb-2"
                        width="100"><br>
                   <input type="file" name="foto" class="form-control-file">
+                  @error('foto')
+                      <small class="text-danger">{{ $message }}</small>
+                  @enderror
               </div>
               <button type="submit" class="btn btn-primary">Ganti Foto</button>
           </form>
@@ -35,16 +38,22 @@
               <div class="form-group">
                   <label>Username:</label>
                   <input type="text" name="username" value="{{ $user->username }}" class="form-control">
+                  @error('username')
+                      <small class="text-danger">{{ $message }}</small>
+                  @enderror
               </div>
 
               <div class="form-group">
                   <label>Nama:</label>
                   <input type="text" name="nama" value="{{ $user->nama }}" class="form-control">
+                  @error('nama')
+                      <small class="text-danger">{{ $message }}</small>
+                  @enderror
               </div>
 
               <div class="form-group">
                   <label>Password Lama:</label>
-                  <input type="password" class="form-control" value="********" readonly>
+                  <input type="password" class="form-control" value="*******" readonly>
               </div>
 
               <div class="form-group position-relative">
@@ -58,8 +67,8 @@
 
               <div class="form-group position-relative">
                   <label>Konfirmasi Password Baru:</label>
-                  <input type="password" name="new_password_confirmation" id="new_password_confirmation" class="form-control" \>
-                  <span toggle="#new_password_confirmation" class="fa fa-fw fa-eye field-icon toggle-password" style="position:absolute; top:35px; right:10px; cursor:pointer;"></span>
+                  <input type="password" name="confirm_password" id="confirm_password" class="form-control" \>
+                  <span toggle="#confirm_password" class="fa fa-fw fa-eye field-icon toggle-password" style="position:absolute; top:35px; right:10px; cursor:pointer;"></span>
               </div>
 
               <button type="submit" class="btn btn-success">Simpan Biodata</button>
