@@ -7,6 +7,7 @@ use App\Http\Controllers\PeranController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KategoriFasilitasController;
+use App\Http\Controllers\KategoriKerusakanController;
 
 
 
@@ -48,6 +49,18 @@ Route::middleware(['auth'])->group(function(){
             Route::put ('/update/{id}', [PeranController::class, 'update'])->name('peran.update');
             Route::get('/delete/{id}', [PeranController::class, 'delete'])->name('peran.delete');
             Route::delete('/destroy/{id}', [PeranController::class, 'destroy'])->name('peran.destroy');
+        });
+
+        Route::prefix('kategori_kerusakan')->group(function () {
+            Route::get('/', [KategoriKerusakanController::class, 'index'])->name('kategori_kerusakan.index');
+            Route::get('/list', [KategoriKerusakanController::class, 'list'])->name('kategori_kerusakan.list');
+            Route::get('/show/{id}', [KategoriKerusakanController::class, 'show'])->name('kategori_kerusakan.show');
+            Route::get('/create', [KategoriKerusakanController::class, 'create'])->name('kategori_kerusakan.create');
+            Route::post('/store', [KategoriKerusakanController::class, 'store'])->name('kategori_kerusakan.store');
+            Route::get('/edit/{id}', [KategoriKerusakanController::class, 'edit'])->name('kategori_kerusakan.edit');
+            Route::put('/update/{id}', [KategoriKerusakanController::class, 'update'])->name('kategori_kerusakan.update');
+            Route::get('/delete/{id}', [KategoriKerusakanController::class, 'delete'])->name('kategori_kerusakan.delete');
+            Route::delete('/destroy/{id}', [KategoriKerusakanController::class, 'destroy'])->name('kategori_kerusakan.destroy');
         });
 
         // Pengguna
