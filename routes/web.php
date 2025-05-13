@@ -1,13 +1,14 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Models\SkoringKriteria;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PeranController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\KriteriaController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\DashboardController;
-
-
+use App\Http\Controllers\SkoringKriteriaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -118,26 +119,36 @@ Route::middleware(['auth'])->group(function(){
 
         // Kriteria & Skoring Kriteria
         Route::prefix('kriteria')->group(function(){
-            Route::get   ('/','KriteriaController@index')->name('kriteria.index');
-            Route::post  ('/store','KriteriaController@store')->name('kriteria.store');
-            Route::post  ('/update/{id}','KriteriaController@update')->name('kriteria.update');
-            Route::delete('/destroy/{id}','KriteriaController@destroy')->name('kriteria.destroy');
+            Route::get    ('/',[KriteriaController::class,'index'])->name('kriteria.index');
+            Route::get    ('/list',[KriteriaController::class,'list'])->name('kriteria.list');
+            Route::get    ('/show/{id}',[KriteriaController::class,'show'])->name('kriteria.show');
+            Route::get    ('/create',[KriteriaController::class,'create'])->name('kriteria.create');
+            Route::post   ('/store',[KriteriaController::class,'store'])->name('kriteria.store');
+            Route::get    ('/edit/{id}',[KriteriaController::class,'edit'])->name('kriteria.edit');
+            Route::put   ('/update/{id}',[KriteriaController::class,'update'])->name('kriteria.update');
+            Route::get   ('/delete/{id}',[KriteriaController::class,'confirm'])->name('kriteria.confirm');
+            Route::delete('/destroy/{id}',[KriteriaController::class,'destroy'])->name('kriteria.destroy');
         });
+
         Route::prefix('skoring-kriteria')->group(function(){
-            Route::get   ('/','SkoringKriteriaController@index')->name('skoring.index');
-            Route::post  ('/store','SkoringKriteriaController@store')->name('skoring.store');
-            Route::post  ('/update/{id}','SkoringKriteriaController@update')->name('skoring.update');
-            Route::delete('/destroy/{id}','SkoringKriteriaController@destroy')->name('skoring.destroy');
+            Route::get   ('/',[SkoringKriteriaController::class, 'index'])->name('skoring.index');
+            Route::get   ('/list/{id}',[SkoringKriteriaController::class, 'list'])->name('skoring.list');
+            Route::get   ('/create/{id}',[SkoringKriteriaController::class, 'create'])->name('skoring.create');
+            Route::post  ('/store/{id}',[SkoringKriteriaController::class, 'store'])->name('skoring.store');
+            Route::get  ('/edit/{id}',[SkoringKriteriaController::class, 'edit'])->name('skoring.edit');
+            Route::put  ('/update/{id}',[SkoringKriteriaController::class, 'update'])->name('skoring.update');
+            Route::get('/delete/{id}',[SkoringKriteriaController::class, 'confirm'])->name('skoring.confirm');
+            Route::delete('/destroy/{id}',[SkoringKriteriaController::class, 'destroy'])->name('skoring.destroy');
         });
     });
 
     Route::prefix('profile')->group(function () {
         Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
-        Route::get('/edit', [ProfileController::class, 'edit'])->name('profile.edit'); // <== Tambahan ini
+        Route::get('/edit', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::post('/update-photo', [ProfileController::class, 'update_photo'])->name('profile.update_photo');
         Route::post('/update-info', [ProfileController::class, 'update_info'])->name('profile.update_info');
         Route::post('/update-password', [ProfileController::class, 'update_password'])->name('profile.update_password');
-    }); 
+    });
 });
 
 Route::get('/icons', function () {

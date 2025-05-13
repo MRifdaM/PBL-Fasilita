@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
             LantaiSeeder::class,
             RuanganSeeder::class,
             FasilitasSeeder::class,
+            SkoringKriteriaSeeder::class
         ]);
     }
 }
