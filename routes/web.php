@@ -10,6 +10,8 @@ use App\Http\Controllers\GedungController;
 use App\Http\Controllers\LantaiController;
 use App\Http\Controllers\RuanganController;
 use App\Http\Controllers\FasilitasController;
+use App\Http\Controllers\KategoriFasilitasController;
+use App\Http\Controllers\KategoriKerusakanController;
 
 
 
@@ -50,6 +52,18 @@ Route::middleware(['auth'])->group(function () {
             Route::put ('/update/{id}', [PeranController::class, 'update'])->name('peran.update');
             Route::get('/delete/{id}', [PeranController::class, 'delete'])->name('peran.delete');
             Route::delete('/destroy/{id}', [PeranController::class, 'destroy'])->name('peran.destroy');
+        });
+
+        Route::prefix('kategori_kerusakan')->group(function () {
+            Route::get('/', [KategoriKerusakanController::class, 'index'])->name('kategori_kerusakan.index');
+            Route::get('/list', [KategoriKerusakanController::class, 'list'])->name('kategori_kerusakan.list');
+            Route::get('/show/{id}', [KategoriKerusakanController::class, 'show'])->name('kategori_kerusakan.show');
+            Route::get('/create', [KategoriKerusakanController::class, 'create'])->name('kategori_kerusakan.create');
+            Route::post('/store', [KategoriKerusakanController::class, 'store'])->name('kategori_kerusakan.store');
+            Route::get('/edit/{id}', [KategoriKerusakanController::class, 'edit'])->name('kategori_kerusakan.edit');
+            Route::put('/update/{id}', [KategoriKerusakanController::class, 'update'])->name('kategori_kerusakan.update');
+            Route::get('/delete/{id}', [KategoriKerusakanController::class, 'delete'])->name('kategori_kerusakan.delete');
+            Route::delete('/destroy/{id}', [KategoriKerusakanController::class, 'destroy'])->name('kategori_kerusakan.destroy');
         });
 
         // Pengguna
@@ -202,18 +216,18 @@ Route::prefix('fasilitas')
 
         // Kategori Fasilitas & Kategori Kerusakan
         Route::prefix('kategori-fasilitas')->group(function () {
-            Route::get('/', 'KategoriFasilitasController@index')->name('kategoriF.index');
-            Route::post('/store', 'KategoriFasilitasController@store')->name('kategoriF.store');
-            Route::post('/update/{id}', 'KategoriFasilitasController@update')->name('kategoriF.update');
-            Route::delete('/destroy/{id}', 'KategoriFasilitasController@destroy')->name('kategoriF.destroy');
-        });
-        Route::prefix('kategori-kerusakan')->group(function () {
-            Route::get('/', 'KategoriKerusakanController@index')->name('kategoriK.index');
-            Route::post('/store', 'KategoriKerusakanController@store')->name('kategoriK.store');
-            Route::post('/update/{id}', 'KategoriKerusakanController@update')->name('kategoriK.update');
-            Route::delete('/destroy/{id}', 'KategoriKerusakanController@destroy')->name('kategoriK.destroy');
+            Route::get('/', [KategoriFasilitasController::class, 'index'])->name('kategoriF.index');
+            Route::get('/list', [KategoriFasilitasController::class, 'list'])->name('kategoriF.list');
+            Route::get('/show/{id}', [KategoriFasilitasController::class, 'show'])->name('kategoriF.show');
+            Route::get('/create', [KategoriFasilitasController::class, 'create'])->name('kategoriF.create');
+            Route::post('/store', [KategoriFasilitasController::class, 'store'])->name('kategoriF.store');
+            Route::get('/edit/{id}', [KategoriFasilitasController::class, 'edit'])->name('kategoriF.edit');
+            Route::put('/update/{id}', [KategoriFasilitasController::class, 'update'])->name('kategoriF.update');
+            Route::get('/delete/{id}', [KategoriFasilitasController::class, 'delete'])->name('kategoriF.delete');
+            Route::delete('/destroy/{id}', [KategoriFasilitasController::class, 'destroy'])->name('kategoriF.destroy');
         });
 
+        
         // Fasilitas
         Route::prefix('fasilitas')->group(function () {
             Route::get('/', 'FasilitasController@index')->name('fasilitas.index');
