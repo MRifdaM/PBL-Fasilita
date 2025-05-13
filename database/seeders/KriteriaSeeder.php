@@ -17,31 +17,36 @@ class KriteriaSeeder extends Seeder
                 'kode_kriteria'  => 'C1',
                 'nama_kriteria'  => 'Urgensi Kerusakan',
                 'bobot_kriteria' => 0.30,
-                'deskripsi'      => 'Seberapa parah kerusakan mengganggu fungsi fasilitas (1 = minor, 5 = kritis)'
+                'tipe_kriteria' => 'benefit',
+                'deskripsi'      => 'Seberapa parah kerusakan mengganggu fungsi fasilitas'
             ],
             [
                 'kode_kriteria'  => 'C2',
                 'nama_kriteria'  => 'Dampak Akademik',
                 'bobot_kriteria' => 0.25,
-                'deskripsi'      => 'Seberapa besar gangguan pada proses belajar/mengajar (1 = kecil, 5 = kelas terhenti sepenuhnya)'
+                'tipe_kriteria' => 'benefit',
+                'deskripsi'      => 'Seberapa besar gangguan pada proses belajar/mengajar'
             ],
             [
                 'kode_kriteria'  => 'C3',
                 'nama_kriteria'  => 'Jumlah Unit Rusak',
                 'bobot_kriteria' => 0.15,
-                'deskripsi'      => 'Banyaknya unit rusak dalam satu alternatif (diskoring 1–5 berdasarkan rentang jumlah unit rusak)'
+                'tipe_kriteria' => 'benefit',
+                'deskripsi'      => 'Banyaknya unit rusak dalam satu alternatif'
             ],
             [
                 'kode_kriteria'  => 'C4',
                 'nama_kriteria'  => 'Risiko Keselamatan',
                 'bobot_kriteria' => 0.15,
-                'deskripsi'      => 'Potensi bahaya fisik jika dibiarkan rusak (1 = rendah, 5 = tinggi)'
+                'tipe_kriteria' => 'benefit',
+                'deskripsi'      => 'Potensi bahaya fisik jika dibiarkan rusak'
             ],
             [
                 'kode_kriteria'  => 'C5',
                 'nama_kriteria'  => 'Jumlah Pelapor',
                 'bobot_kriteria' => 0.15,
-                'deskripsi'      => 'Banyaknya user yang melaporkan insiden sama (diskoring 1–5 berdasarkan rentang jumlah pelapor)'
+                'tipe_kriteria' => 'benefit',
+                'deskripsi'      => 'Banyaknya user yang melaporkan insiden sama'
             ],
         ];
 
