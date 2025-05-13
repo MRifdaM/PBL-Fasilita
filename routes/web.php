@@ -113,13 +113,7 @@ Route::middleware(['auth'])->group(function(){
             Route::delete('/destroy/{id}', [KategoriFasilitasController::class, 'destroy'])->name('kategoriF.destroy');
         });
 
-        Route::prefix('kategori-kerusakan')->group(function(){
-            Route::get   ('/','KategoriKerusakanController@index')->name('kategoriK.index');
-            Route::post  ('/store','KategoriKerusakanController@store')->name('kategoriK.store');
-            Route::post  ('/update/{id}','KategoriKerusakanController@update')->name('kategoriK.update');
-            Route::delete('/destroy/{id}','KategoriKerusakanController@destroy')->name('kategoriK.destroy');
-        });
-
+        
         // Fasilitas
         Route::prefix('fasilitas')->group(function(){
             Route::get   ('/','FasilitasController@index')->name('fasilitas.index');
