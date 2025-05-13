@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PeranController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\KategoriFasilitasController;
 
 
 
@@ -87,12 +88,18 @@ Route::middleware(['auth'])->group(function(){
         });
 
         // Kategori Fasilitas & Kategori Kerusakan
-        Route::prefix('kategori-fasilitas')->group(function(){
-            Route::get   ('/','KategoriFasilitasController@index')->name('kategoriF.index');
-            Route::post  ('/store','KategoriFasilitasController@store')->name('kategoriF.store');
-            Route::post  ('/update/{id}','KategoriFasilitasController@update')->name('kategoriF.update');
-            Route::delete('/destroy/{id}','KategoriFasilitasController@destroy')->name('kategoriF.destroy');
+        Route::prefix('kategori-fasilitas')->group(function () {
+            Route::get('/', [KategoriFasilitasController::class, 'index'])->name('kategoriF.index');
+            Route::get('/list', [KategoriFasilitasController::class, 'list'])->name('kategoriF.list');
+            Route::get('/show/{id}', [KategoriFasilitasController::class, 'show'])->name('kategoriF.show');
+            Route::get('/create', [KategoriFasilitasController::class, 'create'])->name('kategoriF.create');
+            Route::post('/store', [KategoriFasilitasController::class, 'store'])->name('kategoriF.store');
+            Route::get('/edit/{id}', [KategoriFasilitasController::class, 'edit'])->name('kategoriF.edit');
+            Route::put('/update/{id}', [KategoriFasilitasController::class, 'update'])->name('kategoriF.update');
+            Route::get('/delete/{id}', [KategoriFasilitasController::class, 'delete'])->name('kategoriF.delete');
+            Route::delete('/destroy/{id}', [KategoriFasilitasController::class, 'destroy'])->name('kategoriF.destroy');
         });
+
         Route::prefix('kategori-kerusakan')->group(function(){
             Route::get   ('/','KategoriKerusakanController@index')->name('kategoriK.index');
             Route::post  ('/store','KategoriKerusakanController@store')->name('kategoriK.store');
