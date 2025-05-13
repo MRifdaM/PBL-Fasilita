@@ -6,8 +6,13 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PeranController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GedungController;
+use App\Http\Controllers\LantaiController;
+use App\Http\Controllers\RuanganController;
+use App\Http\Controllers\FasilitasController;
 use App\Http\Controllers\KategoriFasilitasController;
 use App\Http\Controllers\KategoriKerusakanController;
+
 
 
 
@@ -27,15 +32,13 @@ use App\Http\Controllers\KategoriKerusakanController;
 // });
 
 
-Route::get('/register', [AuthController::class,'showRegister'])->name('register');
-Route::post('/register', [AuthController::class,'register'])->name('register.store');
-Route::get('/login',    [AuthController::class,'showLogin'])->name('login');
-Route::post('/login',   [AuthController::class,'login'])->name('login.attempt');
-Route::get('/logout', [AuthController::class,'logout'])->name('logout');
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register.store');
+Route::get('/login',    [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login',   [AuthController::class, 'login'])->name('login.attempt');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-
-
-Route::middleware(['auth'])->group(function(){
+Route::middleware(['auth'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::middleware(['role:ADM'])->group(function(){
@@ -81,23 +84,134 @@ Route::middleware(['auth'])->group(function(){
         });
 
         // Master Data Fisik: Gedung, Lantai, Ruangan
-        Route::prefix('gedung')->group(function(){
-            Route::get   ('/','GedungController@index')->name('gedung.index');
-            Route::post  ('/store','GedungController@store')->name('gedung.store');
-            Route::post  ('/update/{id}','GedungController@update')->name('gedung.update');
-            Route::delete('/destroy/{id}','GedungController@destroy')->name('gedung.destroy');
+        /* ----------  GEDUNG  ---------- */
+
+        Route::prefix('gedung')->name('gedung.')->group(function () {
+
+            Route::get('/',                [GedungController::class,'index'])->name('index');
+            Route::get('/list',            [GedungController::class,'list'])->name('list');
+            Route::get('/create',          [GedungController::class,'create'])->name('create');
+            Route::post('/store',          [GedungController::class,'store'])->name('store');
+        
+            /* modal edit & hapus */
+            Route::get('/{gedung}/edit',   [GedungController::class,'edit'])->name('edit');
+            Route::get('/{gedung}/delete', [GedungController::class,'delete'])->name('delete');
+        
+            /* simpan edit & eksekusi hapus */
+            Route::put('/{gedung}',        [GedungController::class,'update'])->name('update');   // ← ganti {id} → {gedung}
+            Route::delete('/{gedung}',     [GedungController::class,'destroy'])->name('destroy'); // ← ganti {id} → {gedung}
         });
-        Route::prefix('lantai')->group(function(){
-            Route::get   ('/','LantaiController@index')->name('lantai.index');
-            Route::post  ('/store','LantaiController@store')->name('lantai.store');
-            Route::post  ('/update/{id}','LantaiController@update')->name('lantai.update');
-            Route::delete('/destroy/{id}','LantaiController@destroy')->name('lantai.destroy');
+        
+        // 1️⃣ Daftar & Tambah Lantai untuk satu Gedung
+Route::prefix('gedung/{gedung}/lantai')
+     ->name('gedung.lantai.')
+     ->group(function () {
+         Route::get('/',       [LantaiController::class,'index'])->name('index');
+         Route::get('list',    [LantaiController::class,'list'])->name('list');
+         Route::get('create',  [LantaiController::class,'create'])->name('create');
+         Route::post('store',  [LantaiController::class,'store'])->name('store');
+     });
+
+// 2️⃣ Akses langsung satu Lantai (Edit / Update / Delete / Show)
+Route::prefix('lantai')->name('lantai.')->group(function () {
+    // modal edit (GET /lantai/{id}/edit)
+    Route::get('{lantai}/edit', [LantaiController::class,'edit'])->name('edit');
+
+    // ★ ganti jadi PUT /lantai/update/{id} ★
+    Route::put('update/{lantai}', [LantaiController::class,'update'])->name('update');
+
+    // modal delete (GET /lantai/{id}/delete)
+    Route::get('{lantai}/delete', [LantaiController::class,'delete'])->name('delete');
+
+    // ★ ganti jadi DELETE /lantai/delete/{id} ★
+    Route::delete('delete/{lantai}', [LantaiController::class,'destroy'])->name('destroy');
+});
+// … pastikan import di atas …
+
+/*
+|--------------------------------------------------------------------------
+| Nested: RUANGAN di dalam LANTAI
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('lantai/{lantai}/ruangan')
+     ->name('lantai.ruangan.')
+     ->group(function(){
+         Route::get('/',      [RuanganController::class,'index'])->name('index');
+         Route::get('list',   [RuanganController::class,'list'])->name('list');
+         Route::get('create', [RuanganController::class,'create'])->name('create');
+         Route::post('store', [RuanganController::class,'store'])->name('store');
+     });
+
+/*
+|--------------------------------------------------------------------------
+| Direct CRUD: RUANGAN
+|--------------------------------------------------------------------------
+*/
+Route::prefix('ruangan')
+     ->name('ruangan.')
+     ->group(function () {
+         // Modal edit (GET /ruangan/13/edit)
+         Route::get('{ruangan}/edit',    [RuanganController::class,'edit'])->name('edit');
+
+         // Update (PUT /ruangan/update/13)
+         Route::put('update/{ruangan}',  [RuanganController::class,'update'])->name('update');
+
+         // Modal delete (GET /ruangan/13/delete)
+         Route::get('{ruangan}/delete',   [RuanganController::class,'delete'])->name('delete');
+
+         // Destroy (DELETE /ruangan/delete/13)
+         Route::delete('delete/{ruangan}',[RuanganController::class,'destroy'])->name('destroy');
+
+         // Show (GET /ruangan/13)
+         Route::get('{ruangan}',          [RuanganController::class,'show'])->name('show');
+         
+     });
+
+     // Nested: Fasilitas di dalam Ruangan
+Route::prefix('ruangan/{ruangan}/fasilitas')
+     ->name('ruangan.fasilitas.')
+     ->group(function(){
+         Route::get('/',       [FasilitasController::class,'index'])->name('index');
+         Route::get('list',    [FasilitasController::class,'list'])->name('list');
+         Route::get('create',  [FasilitasController::class,'create'])->name('create');
+         Route::post('store',  [FasilitasController::class,'store'])->name('store');
+     });
+
+// CRUD langsung Fasilitas
+Route::prefix('fasilitas')
+     ->name('fasilitas.')
+     ->group(function(){
+         // form edit
+         Route::get('{fasilitas}/edit',   [FasilitasController::class,'edit'])->name('edit');
+         // update = PUT /fasilitas/update/{id}
+         Route::put('update/{fasilitas}', [FasilitasController::class,'update'])->name('update');
+         // form delete
+         Route::get('{fasilitas}/delete', [FasilitasController::class,'delete'])->name('delete');
+         // destroy = DELETE /fasilitas/delete/{id}
+         Route::delete('delete/{fasilitas}', [FasilitasController::class,'destroy'])->name('destroy');
+         // detail show
+         Route::get('{fasilitas}',        [FasilitasController::class,'show'])->name('show');
+     });
+
+        /* -----------------------------------------------------------------
+         |  FASILITAS (akses langsung: edit / update / delete)
+         |------------------------------------------------------------------*/
+        Route::prefix('fasilitas')->name('fasilitas.')->group(function () {
+            Route::get('/{fasilitas}/edit', [FasilitasController::class, 'edit'])->name('edit');
+            Route::put('/{fasilitas}',      [FasilitasController::class, 'update'])->name('update');
+            Route::delete('/{fasilitas}',   [FasilitasController::class, 'destroy'])->name('destroy');
         });
-        Route::prefix('ruangan')->group(function(){
-            Route::get   ('/','RuanganController@index')->name('ruangan.index');
-            Route::post  ('/store','RuanganController@store')->name('ruangan.store');
-            Route::post  ('/update/{id}','RuanganController@update')->name('ruangan.update');
-            Route::delete('/destroy/{id}','RuanganController@destroy')->name('ruangan.destroy');
+        Route::prefix('lantai')->group(function () {
+            Route::get('/', 'LantaiController@index')->name('lantai.index');
+            Route::post('/store', 'LantaiController@store')->name('lantai.store');
+            Route::post('/update/{id}', 'LantaiController@update')->name('lantai.update');
+            
+        });
+        Route::prefix('ruangan')->group(function () {
+            Route::get('/', 'RuanganController@index')->name('ruangan.index');
+            Route::post('/store', 'RuanganController@store')->name('ruangan.store');
+            Route::post('/update/{id}', 'RuanganController@update')->name('ruangan.update');
         });
 
         // Kategori Fasilitas & Kategori Kerusakan
@@ -115,36 +229,36 @@ Route::middleware(['auth'])->group(function(){
 
         
         // Fasilitas
-        Route::prefix('fasilitas')->group(function(){
-            Route::get   ('/','FasilitasController@index')->name('fasilitas.index');
-            Route::post  ('/store','FasilitasController@store')->name('fasilitas.store');
-            Route::post  ('/update/{id}','FasilitasController@update')->name('fasilitas.update');
-            Route::delete('/destroy/{id}','FasilitasController@destroy')->name('fasilitas.destroy');
+        Route::prefix('fasilitas')->group(function () {
+            Route::get('/', 'FasilitasController@index')->name('fasilitas.index');
+            Route::post('/store', 'FasilitasController@store')->name('fasilitas.store');
+            Route::post('/update/{id}', 'FasilitasController@update')->name('fasilitas.update');
+            
         });
 
         // Status (master)
-        Route::prefix('status')->group(function(){
-            Route::get   ('/','StatusController@index')->name('status.index');
-            Route::post  ('/store','StatusController@store')->name('status.store');
-            Route::post  ('/update/{id}','StatusController@update')->name('status.update');
-            Route::delete('/destroy/{id}','StatusController@destroy')->name('status.destroy');
+        Route::prefix('status')->group(function () {
+            Route::get('/', 'StatusController@index')->name('status.index');
+            Route::post('/store', 'StatusController@store')->name('status.store');
+            Route::post('/update/{id}', 'StatusController@update')->name('status.update');
+            Route::delete('/destroy/{id}', 'StatusController@destroy')->name('status.destroy');
         });
 
         // Kriteria & Skoring Kriteria
-        Route::prefix('kriteria')->group(function(){
-            Route::get   ('/','KriteriaController@index')->name('kriteria.index');
-            Route::post  ('/store','KriteriaController@store')->name('kriteria.store');
-            Route::post  ('/update/{id}','KriteriaController@update')->name('kriteria.update');
-            Route::delete('/destroy/{id}','KriteriaController@destroy')->name('kriteria.destroy');
+        Route::prefix('kriteria')->group(function () {
+            Route::get('/', 'KriteriaController@index')->name('kriteria.index');
+            Route::post('/store', 'KriteriaController@store')->name('kriteria.store');
+            Route::post('/update/{id}', 'KriteriaController@update')->name('kriteria.update');
+            Route::delete('/destroy/{id}', 'KriteriaController@destroy')->name('kriteria.destroy');
         });
-        Route::prefix('skoring-kriteria')->group(function(){
-            Route::get   ('/','SkoringKriteriaController@index')->name('skoring.index');
-            Route::post  ('/store','SkoringKriteriaController@store')->name('skoring.store');
-            Route::post  ('/update/{id}','SkoringKriteriaController@update')->name('skoring.update');
-            Route::delete('/destroy/{id}','SkoringKriteriaController@destroy')->name('skoring.destroy');
+        Route::prefix('skoring-kriteria')->group(function () {
+            Route::get('/', 'SkoringKriteriaController@index')->name('skoring.index');
+            Route::post('/store', 'SkoringKriteriaController@store')->name('skoring.store');
+            Route::post('/update/{id}', 'SkoringKriteriaController@update')->name('skoring.update');
+            Route::delete('/destroy/{id}', 'SkoringKriteriaController@destroy')->name('skoring.destroy');
         });
     });
-
+    
     Route::prefix('profile')->group(function () {
         Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
         Route::get('/edit', [ProfileController::class, 'edit'])->name('profile.edit'); // <== Tambahan ini
@@ -152,10 +266,9 @@ Route::middleware(['auth'])->group(function(){
         Route::post('/update-info', [ProfileController::class, 'update_info'])->name('profile.update_info');
         Route::post('/update-password', [ProfileController::class, 'update_password'])->name('profile.update_password');
     }); 
-});
-
-Route::get('/icons', function () {
-    return view('pages.icons.index');
+    Route::get('/icons', function () {
+        return view('pages.icons.index');
+    });
 });
 Route::get('/forms', function () {
     return view('pages.icons.index');
