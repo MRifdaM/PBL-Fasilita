@@ -3,10 +3,21 @@
 
         {{-- Dashboard (all users) --}}
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('dashboard') }}">
-                <i class="fas fa-tachometer-alt menu-icon"></i>
-                <span class="menu-title">Dashboard</span>
-            </a>
+          <a class="nav-link" data-toggle="collapse" href="#user-management" aria-expanded="false">
+            <i class="icon-people menu-icon"></i>
+            <span class="menu-title">Manajemen Pengguna</span>
+            <i class="menu-arrow"></i>
+          </a>
+          <div class="collapse" id="user-management">
+            <ul class="nav flex-column sub-menu">
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('peran.index') }}">Peran & Hak Akses</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="">Daftar Pengguna</a>
+              </li>
+            </ul>
+          </div>
         </li>
 
         {{-- ADMIN MENU --}}
@@ -82,7 +93,7 @@
                 <a class="nav-link" href="{{ route('kategoriF.index') }}">Kategori Fasilitas</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{ route('kategoriK.index') }}">Kategori Kerusakan</a>
+                <a class="nav-link" href="{{ route('kategori_kerusakan.index') }}">Kategori Kerusakan</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{{ route('status.index') }}">Status Laporan</a>
