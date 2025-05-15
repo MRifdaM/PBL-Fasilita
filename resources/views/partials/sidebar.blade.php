@@ -3,21 +3,10 @@
 
         {{-- Dashboard (all users) --}}
         <li class="nav-item">
-          <a class="nav-link" data-toggle="collapse" href="#user-management" aria-expanded="false">
-            <i class="icon-people menu-icon"></i>
-            <span class="menu-title">Manajemen Pengguna</span>
-            <i class="menu-arrow"></i>
-          </a>
-          <div class="collapse" id="user-management">
-            <ul class="nav flex-column sub-menu">
-              <li class="nav-item">
-                <a class="nav-link" href="{{ route('peran.index') }}">Peran & Hak Akses</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="">Daftar Pengguna</a>
-              </li>
-            </ul>
-          </div>
+            <a class="nav-link" href="{{ route('dashboard') }}">
+                <i class="fas fa-tachometer-alt menu-icon"></i>
+                <span class="menu-title">Dashboard</span>
+            </a>
         </li>
 
         {{-- ADMIN MENU --}}
@@ -90,13 +79,19 @@
           <div class="collapse" id="master-data">
             <ul class="nav flex-column sub-menu">
               <li class="nav-item">
-                <a class="nav-link" href="{{ route('kategoriF.index') }}">Kategori Fasilitas</a>
+                <a class="nav-link" href="{{ route('kategoriF.index') }}">
+                    <i class="fas fa-tags menu-icon"></i> Kategori Fasilitas
+                </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{ route('kategori_kerusakan.index') }}">Kategori Kerusakan</a>
+                <a class="nav-link" href="{{ route('kategori_kerusakan.index') }}">
+                    <i class="fas fa-exclamation-triangle menu-icon"></i> Kategori Kerusakan
+                </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{ route('status.index') }}">Status Laporan</a>
+                <a class="nav-link" href="{{ route('status.index') }}">
+                    <i class="fas fa-flag menu-icon"></i> Status Laporan
+                </a>
               </li>
             </ul>
           </div>
@@ -105,17 +100,21 @@
         {{-- SPK & Criteria --}}
         <li class="nav-item">
           <a class="nav-link" data-toggle="collapse" href="#spk-management" aria-expanded="false">
-            <i class="icon-calculator menu-icon"></i>
+            <i class="fas fa-calculator menu-icon"></i>
             <span class="menu-title">SPK & Kriteria</span>
             <i class="menu-arrow"></i>
           </a>
           <div class="collapse" id="spk-management">
             <ul class="nav flex-column sub-menu">
               <li class="nav-item">
-                <a class="nav-link" href="{{ route('kriteria.index') }}">Kriteria Penilaian</a>
+                <a class="nav-link" href="{{ route('kriteria.index') }}">
+                    <i class="fas fa-list-ol menu-icon"></i> Kriteria Penilaian
+                </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{ route('skoring.index') }}">Skoring Kriteria</a>
+                <a class="nav-link" href="{{ route('skoring.index') }}">
+                     <i class="fas fa-star-half-alt menu-icon"></i> Skoring Kriteria
+                </a>
               </li>
             </ul>
           </div>

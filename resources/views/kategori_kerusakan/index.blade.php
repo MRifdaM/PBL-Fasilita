@@ -7,7 +7,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <h3 class="card-title my-5 w-25">Data Kategori Kerusakan</h3>
                     <button class="btn btn-primary px-5" onclick="modalAction('{{ url('kategori_kerusakan/create') }}')">
-                        Tambah +
+                        Tambah Kategori Kerusakan
                     </button>
                 </div>
                 <div class="table-responsive">
