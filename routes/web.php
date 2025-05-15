@@ -95,107 +95,112 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/list',            [GedungController::class,'list'])->name('list');
             Route::get('/create',          [GedungController::class,'create'])->name('create');
             Route::post('/store',          [GedungController::class,'store'])->name('store');
-        
+
             /* modal edit & hapus */
             Route::get('/{gedung}/edit',   [GedungController::class,'edit'])->name('edit');
             Route::get('/{gedung}/delete', [GedungController::class,'delete'])->name('delete');
-        
+
             /* simpan edit & eksekusi hapus */
             Route::put('/{gedung}',        [GedungController::class,'update'])->name('update');   // ← ganti {id} → {gedung}
             Route::delete('/{gedung}',     [GedungController::class,'destroy'])->name('destroy'); // ← ganti {id} → {gedung}
         });
-        
+
         // 1️⃣ Daftar & Tambah Lantai untuk satu Gedung
-Route::prefix('gedung/{gedung}/lantai')
-     ->name('gedung.lantai.')
-     ->group(function () {
-         Route::get('/',       [LantaiController::class,'index'])->name('index');
-         Route::get('list',    [LantaiController::class,'list'])->name('list');
-         Route::get('create',  [LantaiController::class,'create'])->name('create');
-         Route::post('store',  [LantaiController::class,'store'])->name('store');
-     });
+        Route::prefix('gedung/{gedung}/lantai')
+            ->name('gedung.lantai.')
+            ->group(function () {
+                Route::get('/',       [LantaiController::class,'index'])->name('index');
+                Route::get('list',    [LantaiController::class,'list'])->name('list');
+                Route::get('create',  [LantaiController::class,'create'])->name('create');
+                Route::post('store',  [LantaiController::class,'store'])->name('store');
+            }
+        );
 
-// 2️⃣ Akses langsung satu Lantai (Edit / Update / Delete / Show)
-Route::prefix('lantai')->name('lantai.')->group(function () {
-    // modal edit (GET /lantai/{id}/edit)
-    Route::get('{lantai}/edit', [LantaiController::class,'edit'])->name('edit');
+        // 2️⃣ Akses langsung satu Lantai (Edit / Update / Delete / Show)
+        Route::prefix('lantai')->name('lantai.')->group(function () {
+            // modal edit (GET /lantai/{id}/edit)
+            Route::get('{lantai}/edit', [LantaiController::class,'edit'])->name('edit');
 
-    // ★ ganti jadi PUT /lantai/update/{id} ★
-    Route::put('update/{lantai}', [LantaiController::class,'update'])->name('update');
+            // ★ ganti jadi PUT /lantai/update/{id} ★
+            Route::put('update/{lantai}', [LantaiController::class,'update'])->name('update');
 
-    // modal delete (GET /lantai/{id}/delete)
-    Route::get('{lantai}/delete', [LantaiController::class,'delete'])->name('delete');
+            // modal delete (GET /lantai/{id}/delete)
+            Route::get('{lantai}/delete', [LantaiController::class,'delete'])->name('delete');
 
-    // ★ ganti jadi DELETE /lantai/delete/{id} ★
-    Route::delete('delete/{lantai}', [LantaiController::class,'destroy'])->name('destroy');
-});
-// … pastikan import di atas …
+            // ★ ganti jadi DELETE /lantai/delete/{id} ★
+            Route::delete('delete/{lantai}', [LantaiController::class,'destroy'])->name('destroy');
+        });
+        // … pastikan import di atas …
 
-/*
-|--------------------------------------------------------------------------
-| Nested: RUANGAN di dalam LANTAI
-|--------------------------------------------------------------------------
-*/
+        /*
+        |--------------------------------------------------------------------------
+        | Nested: RUANGAN di dalam LANTAI
+        |--------------------------------------------------------------------------
+        */
 
-Route::prefix('lantai/{lantai}/ruangan')
-     ->name('lantai.ruangan.')
-     ->group(function(){
-         Route::get('/',      [RuanganController::class,'index'])->name('index');
-         Route::get('list',   [RuanganController::class,'list'])->name('list');
-         Route::get('create', [RuanganController::class,'create'])->name('create');
-         Route::post('store', [RuanganController::class,'store'])->name('store');
-     });
+        Route::prefix('lantai/{lantai}/ruangan')
+            ->name('lantai.ruangan.')
+            ->group(function(){
+                Route::get('/',      [RuanganController::class,'index'])->name('index');
+                Route::get('list',   [RuanganController::class,'list'])->name('list');
+                Route::get('create', [RuanganController::class,'create'])->name('create');
+                Route::post('store', [RuanganController::class,'store'])->name('store');
+            }
+        );
 
-/*
-|--------------------------------------------------------------------------
-| Direct CRUD: RUANGAN
-|--------------------------------------------------------------------------
-*/
-Route::prefix('ruangan')
-     ->name('ruangan.')
-     ->group(function () {
-         // Modal edit (GET /ruangan/13/edit)
-         Route::get('{ruangan}/edit',    [RuanganController::class,'edit'])->name('edit');
+        /*
+        |--------------------------------------------------------------------------
+        | Direct CRUD: RUANGAN
+        |--------------------------------------------------------------------------
+        */
+        Route::prefix('ruangan')
+            ->name('ruangan.')
+            ->group(function () {
+                // Modal edit (GET /ruangan/13/edit)
+                Route::get('{ruangan}/edit',    [RuanganController::class,'edit'])->name('edit');
 
-         // Update (PUT /ruangan/update/13)
-         Route::put('update/{ruangan}',  [RuanganController::class,'update'])->name('update');
+                // Update (PUT /ruangan/update/13)
+                Route::put('update/{ruangan}',  [RuanganController::class,'update'])->name('update');
 
-         // Modal delete (GET /ruangan/13/delete)
-         Route::get('{ruangan}/delete',   [RuanganController::class,'delete'])->name('delete');
+                // Modal delete (GET /ruangan/13/delete)
+                Route::get('{ruangan}/delete',   [RuanganController::class,'delete'])->name('delete');
 
-         // Destroy (DELETE /ruangan/delete/13)
-         Route::delete('delete/{ruangan}',[RuanganController::class,'destroy'])->name('destroy');
+                // Destroy (DELETE /ruangan/delete/13)
+                Route::delete('delete/{ruangan}',[RuanganController::class,'destroy'])->name('destroy');
 
-         // Show (GET /ruangan/13)
-         Route::get('{ruangan}',          [RuanganController::class,'show'])->name('show');
-         
-     });
+                // Show (GET /ruangan/13)
+                Route::get('{ruangan}',          [RuanganController::class,'show'])->name('show');
 
-     // Nested: Fasilitas di dalam Ruangan
-Route::prefix('ruangan/{ruangan}/fasilitas')
-     ->name('ruangan.fasilitas.')
-     ->group(function(){
-         Route::get('/',       [FasilitasController::class,'index'])->name('index');
-         Route::get('list',    [FasilitasController::class,'list'])->name('list');
-         Route::get('create',  [FasilitasController::class,'create'])->name('create');
-         Route::post('store',  [FasilitasController::class,'store'])->name('store');
-     });
+            }
+        );
 
-// CRUD langsung Fasilitas
-Route::prefix('fasilitas')
-     ->name('fasilitas.')
-     ->group(function(){
-         // form edit
-         Route::get('{fasilitas}/edit',   [FasilitasController::class,'edit'])->name('edit');
-         // update = PUT /fasilitas/update/{id}
-         Route::put('update/{fasilitas}', [FasilitasController::class,'update'])->name('update');
-         // form delete
-         Route::get('{fasilitas}/delete', [FasilitasController::class,'delete'])->name('delete');
-         // destroy = DELETE /fasilitas/delete/{id}
-         Route::delete('delete/{fasilitas}', [FasilitasController::class,'destroy'])->name('destroy');
-         // detail show
-         Route::get('{fasilitas}',        [FasilitasController::class,'show'])->name('show');
-     });
+        // Nested: Fasilitas di dalam Ruangan
+        Route::prefix('ruangan/{ruangan}/fasilitas')
+            ->name('ruangan.fasilitas.')
+            ->group(function(){
+                Route::get('/',       [FasilitasController::class,'index'])->name('index');
+                Route::get('list',    [FasilitasController::class,'list'])->name('list');
+                Route::get('create',  [FasilitasController::class,'create'])->name('create');
+                Route::post('store',  [FasilitasController::class,'store'])->name('store');
+            }
+        );
+
+        // CRUD langsung Fasilitas
+        Route::prefix('fasilitas')
+            ->name('fasilitas.')
+            ->group(function(){
+                // form edit
+                Route::get('{fasilitas}/edit',   [FasilitasController::class,'edit'])->name('edit');
+                // update = PUT /fasilitas/update/{id}
+                Route::put('update/{fasilitas}', [FasilitasController::class,'update'])->name('update');
+                // form delete
+                Route::get('{fasilitas}/delete', [FasilitasController::class,'delete'])->name('delete');
+                // destroy = DELETE /fasilitas/delete/{id}
+                Route::delete('delete/{fasilitas}', [FasilitasController::class,'destroy'])->name('destroy');
+                // detail show
+                Route::get('{fasilitas}',        [FasilitasController::class,'show'])->name('show');
+            }
+        );
 
         /* -----------------------------------------------------------------
          |  FASILITAS (akses langsung: edit / update / delete)
@@ -209,7 +214,7 @@ Route::prefix('fasilitas')
             Route::get('/', 'LantaiController@index')->name('lantai.index');
             Route::post('/store', 'LantaiController@store')->name('lantai.store');
             Route::post('/update/{id}', 'LantaiController@update')->name('lantai.update');
-            
+
         });
         Route::prefix('ruangan')->group(function () {
             Route::get('/', 'RuanganController@index')->name('ruangan.index');
@@ -230,13 +235,13 @@ Route::prefix('fasilitas')
             Route::delete('/destroy/{id}', [KategoriFasilitasController::class, 'destroy'])->name('kategoriF.destroy');
         });
 
-        
+
         // Fasilitas
         Route::prefix('fasilitas')->group(function () {
             Route::get('/', 'FasilitasController@index')->name('fasilitas.index');
             Route::post('/store', 'FasilitasController@store')->name('fasilitas.store');
             Route::post('/update/{id}', 'FasilitasController@update')->name('fasilitas.update');
-            
+
         });
 
         // Status (master)
@@ -272,18 +277,22 @@ Route::prefix('fasilitas')
 
         });
     });
-    
+
     Route::prefix('profile')->group(function () {
         Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
         Route::get('/edit', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::post('/update-photo', [ProfileController::class, 'update_photo'])->name('profile.update_photo');
         Route::post('/update-info', [ProfileController::class, 'update_info'])->name('profile.update_info');
         Route::post('/update-password', [ProfileController::class, 'update_password'])->name('profile.update_password');
-    }); 
+    });
+
     Route::get('/icons', function () {
         return view('pages.icons.index');
     });
+
 });
+
+
 Route::get('/forms', function () {
     return view('pages.icons.index');
 });
