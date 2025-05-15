@@ -127,7 +127,7 @@
       @if(auth()->user()->hasAnyRole(['ADM','SPR']))
       <li class="nav-item">
         <a class="nav-link" href="">
-        <a class="nav-link" href="{{ route('verifikasi.index') }}">
+        {{-- <a class="nav-link" href="{{ route('verifikasi.index') }}"> --}}
           <i class="fas fa-clipboard-check menu-icon"></i> <!-- Ganti ikon di sini -->
           <span class="menu-title">Verifikasi Laporan</span>
         </a>
