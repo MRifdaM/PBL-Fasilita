@@ -19,6 +19,8 @@ class Laporan extends Model
         'id_lantai',
         'id_ruangan',
         'is_active',
+        'created_at',
+        'updated_at'
     ];
 
     public function pengguna(): BelongsTo
@@ -43,7 +45,7 @@ class Laporan extends Model
 
     public function laporanFasilitas(): HasMany
     {
-        return $this->hasMany(LaporanFasilitas::class, 'id_laporan');
+        return $this->hasMany(LaporanFasilitas::class, 'id_laporan', 'id_laporan');
     }
 
     public function penilaianPengguna(): HasMany

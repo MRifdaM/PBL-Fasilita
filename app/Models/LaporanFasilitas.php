@@ -21,11 +21,13 @@ class LaporanFasilitas extends Model
         'jumlah_rusak',
         'path_foto',
         'deskripsi',
+        'created_at',
+        'updated_at',
     ];
 
     public function laporan(): BelongsTo
     {
-        return $this->belongsTo(Laporan::class, 'id_laporan');
+        return $this->belongsTo(Laporan::class, 'id_laporan', 'id_laporan');
     }
 
     public function fasilitas(): BelongsTo

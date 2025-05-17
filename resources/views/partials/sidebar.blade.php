@@ -96,6 +96,9 @@
                 <a class="nav-link" href="{{ route('kategori_kerusakan.index') }}">Kategori Kerusakan</a>
               </li>
               <li class="nav-item">
+                <a class="nav-link" href="{{ route('laporan.index') }}">Data Laporan</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" href="{{ route('status.index') }}">Status Laporan</a>
               </li>
             </ul>

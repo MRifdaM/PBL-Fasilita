@@ -13,6 +13,7 @@ use App\Http\Controllers\GedungController;
 use App\Http\Controllers\LantaiController;
 use App\Http\Controllers\RuanganController;
 use App\Http\Controllers\FasilitasController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\KategoriFasilitasController;
 use App\Http\Controllers\KategoriKerusakanController;
 
@@ -229,7 +230,6 @@ Route::prefix('fasilitas')
             Route::get('/delete/{id}', [KategoriFasilitasController::class, 'delete'])->name('kategoriF.delete');
             Route::delete('/destroy/{id}', [KategoriFasilitasController::class, 'destroy'])->name('kategoriF.destroy');
         });
-
         
         // Fasilitas
         Route::prefix('fasilitas')->group(function () {
@@ -237,6 +237,22 @@ Route::prefix('fasilitas')
             Route::post('/store', 'FasilitasController@store')->name('fasilitas.store');
             Route::post('/update/{id}', 'FasilitasController@update')->name('fasilitas.update');
             
+        });
+
+        // Laporan
+        Route::prefix('laporan')->group(function () {
+            Route::get('/', [LaporanController::class, 'index'])->name('laporan.index');
+            Route::get('/list', [LaporanController::class, 'list'])->name('laporan.list');
+            Route::get('/show/{id}', [LaporanController::class, 'show'])->name('laporan.show');
+            Route::get('/create', [LaporanController::class, 'create'])->name('laporan.create');
+            Route::post('/store', [LaporanController::class, 'store'])->name('laporan.store');
+            Route::get('/edit/{id}', [LaporanController::class, 'edit'])->name('laporan.edit');
+            Route::put('/update/{id}', [LaporanController::class, 'update'])->name('laporan.update');
+            Route::get('/delete/{id}', [LaporanController::class, 'delete'])->name('laporan.delete');
+            Route::delete('/destroy/{id}', [LaporanController::class, 'destroy'])->name('laporan.destroy');
+            Route::get('/get-lantai/{idGedung}', [LaporanController::class, 'getLantai']);
+            Route::get('/get-ruangan/{idLantai}', [LaporanController::class, 'getRuangan']);
+
         });
 
         // Status (master)
@@ -285,5 +301,5 @@ Route::prefix('fasilitas')
     });
 });
 Route::get('/forms', function () {
-    return view('pages.icons.index');
+    return view('pages.forms.index');
 });
