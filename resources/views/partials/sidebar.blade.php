@@ -50,21 +50,6 @@
                                 <i class="fas fa-university menu-icon"></i> Gedung
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('lantai.index') }}">
-                                <i class="fas fa-layer-group menu-icon"></i> Lantai
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('ruangan.index') }}">
-                                <i class="fas fa-door-open menu-icon"></i> Ruangan
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('fasilitas.index') }}">
-                                <i class="fas fa-couch menu-icon"></i> Fasilitas
-                            </a>
-                        </li>
                     </ul>
                 </div>
             </li>

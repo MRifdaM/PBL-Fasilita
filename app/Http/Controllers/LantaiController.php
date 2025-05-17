@@ -24,15 +24,17 @@ class LantaiController extends Controller
 
                        return DataTables::of($data)
                        ->addIndexColumn()
+                       ->addColumn('pilih', function($row){
+            return '<button
+                        onclick="window.location=\''.route('lantai.ruangan.index',$row->id_lantai).'\'"
+                        class="btn btn-primary btn-pilih">
+                        <i class="mdi mdi-door-open"></i>
+                        <span class="ms-1">Pilih</span>
+                    </button>';
+        })
                        ->addColumn('aksi', function ($row) {
                            return '
                            <div class="btn-group">
-                   
-                               <!-- PILIH  ➜  buka halaman daftar ruangan -->
-                               <button onclick="window.location=\''.route('lantai.ruangan.index',$row->id_lantai).'\'"
-                                       class="btn btn-success btn-sm">
-                                 <i class="mdi mdi-door-open mr-1"></i>Pilih
-                               </button>
                    
                                <!-- tombol Edit -->
                 <button onclick="modalAction(\''.route('lantai.edit',   $row->id_lantai).'\')"
@@ -48,7 +50,7 @@ class LantaiController extends Controller
                                </button>
                            </div>';
                        })
-                       ->rawColumns(['aksi'])
+                       ->rawColumns(['aksi', 'pilih']) // kolom yang berisi HTML
                        ->make(true);                   
     }
 
