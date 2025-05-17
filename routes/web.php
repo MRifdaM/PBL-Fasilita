@@ -16,6 +16,7 @@ use App\Http\Controllers\FasilitasController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\KategoriFasilitasController;
 use App\Http\Controllers\KategoriKerusakanController;
+use App\Http\Controllers\RiwayatLaporanFasilitasController;
 
 
 
@@ -293,6 +294,15 @@ Route::middleware(['auth'])->group(function () {
 
         });
     });
+    
+
+    // USER ROLE: MHS, DSN, TDK
+    Route::middleware(['role:MHS|DSN|TDK'])->group(function(){
+    Route::prefix('riwayat-laporan')->controller(RiwayatLaporanFasilitasController::class)->group(function () {
+        Route::get('/', 'index')->name('riwayat-laporan.index');
+        Route::get('/list', 'list')->name('riwayat-laporan.list');
+        Route::get('/show/{id}', 'show')->name('riwayat-laporan.show');
+    });
 
     Route::prefix('profile')->group(function () {
         Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
@@ -311,4 +321,5 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/forms', function () {
     return view('pages.forms.index');
+});
 });
