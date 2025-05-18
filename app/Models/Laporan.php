@@ -18,7 +18,6 @@ class Laporan extends Model
         'id_gedung',
         'id_lantai',
         'id_ruangan',
-        'is_active',
         'created_at',
         'updated_at'
     ];
