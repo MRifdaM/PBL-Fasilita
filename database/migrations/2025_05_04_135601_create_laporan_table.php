@@ -17,7 +17,6 @@ return new class extends Migration
             $table->unsignedBigInteger('id_gedung')->index();
             $table->unsignedBigInteger('id_lantai')->index();
             $table->unsignedBigInteger('id_ruangan')->index();
-            $table->boolean('is_active')->default(true);
             $table->timestamps();
 
             $table->foreign('id_pengguna')->references('id_pengguna')->on('pengguna');
