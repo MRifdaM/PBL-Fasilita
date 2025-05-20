@@ -21,6 +21,7 @@ use App\Http\Controllers\RiwayatLaporanFasilitasController;
 
 
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -261,7 +262,8 @@ Route::middleware(['auth'])->group(function () {
 
         });
 
-        // Status (master)
+
+         // Status (master)
         Route::prefix('status')->group(function () {
             Route::get('/', 'StatusController@index')->name('status.index');
             Route::post('/store', 'StatusController@store')->name('status.store');
@@ -294,16 +296,42 @@ Route::middleware(['auth'])->group(function () {
 
         });
     });
-    
 
-    // USER ROLE: MHS, DSN, TDK
-    Route::middleware(['role:MHS|DSN|TDK'])->group(function(){
-    Route::prefix('riwayat-laporan')->controller(RiwayatLaporanFasilitasController::class)->group(function () {
-        Route::get('/', 'index')->name('riwayat-laporan.index');
-        Route::get('/list', 'list')->name('riwayat-laporan.list');
-        Route::get('/show/{id}', 'show')->name('riwayat-laporan.show');
+    Route::middleware(['role:ADM,SPR'])->group(function(){
+        Route::prefix('laporan')->group(function(){
+            Route::get('/', [LaporanController::class, 'index'])->name('laporan.index');
+            Route::get('/list', [LaporanController::class, 'list'])->name('laporan.list');
+            Route::get('/show/{id}', [LaporanController::class, 'show'])->name('laporan.show');
+            Route::get('/create', [LaporanController::class, 'create'])->name('laporan.create');
+            Route::post('/store', [LaporanController::class, 'store'])->name('laporan.store');
+            Route::get('/edit/{id}', [LaporanController::class, 'edit'])->name('laporan.edit');
+            Route::put('/update/{id}', [LaporanController::class, 'update'])->name('laporan.update');
+            Route::get('/delete/{id}', [LaporanController::class, 'delete'])->name('laporan.delete');
+            Route::delete('/destroy/{id}', [LaporanController::class, 'destroy'])->name('laporan.destroy');
+            Route::get('/get-lantai/{idGedung}', [LaporanController::class, 'getLantai']);
+            Route::get('/get-ruangan/{idLantai}', [LaporanController::class, 'getRuangan']);
+            Route::get('/{id}/verifikasi', [LaporanController::class,'formByLaporan']) ->name('laporan.verifikasi.form');
+            Route::post ('/verifikasi', [LaporanController::class,'storeByLaporan'])->name('laporan.verifikasi.store');
+        });        
     });
 
+    // Route::middleware(['role:ADM,SPR'])->prefix('riwayat')->group(function () {
+    //     Route::get('/', [RiwayatVerifikasiController::class, 'index'])->name('riwayat.index');
+    //     Route::get('/list', [RiwayatVerifikasiController::class, 'list'])->name('riwayat.list');
+    //     Route::get('/{id}', [RiwayatVerifikasiController::class, 'show'])->name('riwayat.show');
+    // });
+
+    Route::middleware('auth')
+     ->prefix('riwayatPelapor')
+     ->name('riwayatPelapor.')
+     ->group(function(){
+        Route::get('/',    [RiwayatLaporanFasilitasController::class,'index'])->name('index');
+        Route::get('/{id}',[RiwayatLaporanFasilitasController::class,'show'])->name('show');
+        // hanya ketika status terakhir = Edit Laporan
+    Route::get('/{id}/edit',   [RiwayatLaporanFasilitasController::class,'edit'])->name('edit');
+    Route::put('/{id}',        [RiwayatLaporanFasilitasController::class,'update'])->name('update');
+     });
+    
     Route::prefix('profile')->group(function () {
         Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
         Route::get('/edit', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -312,6 +340,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/update-password', [ProfileController::class, 'update_password'])->name('profile.update_password');
     });
 
+
+
+    
     Route::get('/icons', function () {
         return view('pages.icons.index');
     });
@@ -321,5 +352,4 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/forms', function () {
     return view('pages.forms.index');
-});
 });
