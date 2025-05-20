@@ -162,7 +162,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('laporan.index') }}">
+                            <a class="nav-link" href="{{ route('riwayatPelapor.index') }}">
                                 <i class="fas fa-user-friends menu-icon"></i> Riwayat Laporan
                             </a>
                         </li>

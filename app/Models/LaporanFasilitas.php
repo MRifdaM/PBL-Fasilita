@@ -26,10 +26,10 @@ class LaporanFasilitas extends Model
         'updated_at',
     ];
 
-    public function laporan(): BelongsTo
-    {
-        return $this->belongsTo(Laporan::class, 'id_laporan', 'id_laporan');
-    }
+   public function laporan()
+{
+    return $this->belongsTo(\App\Models\Laporan::class, 'id_laporan', 'id_laporan');
+}
 
     public function fasilitas(): BelongsTo
     {
@@ -69,5 +69,10 @@ class LaporanFasilitas extends Model
     public function skorTopsis(): HasMany
     {
         return $this->hasMany(SkorTopsis::class, 'id_laporan_fasilitas');
+    }
+
+    public function riwayat(): HasMany
+    {
+        return $this->hasMany(RiwayatLaporanFasilitas::class, 'id_laporan_fasilitas');
     }
 }
