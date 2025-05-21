@@ -74,12 +74,13 @@
                 <td>
                   @php
                     $badge = match($item->status->nama_status){
-                      'Menunggu Aktivasi'=>'bg-warning text-dark',
-                      'Aktivasi Laporan'=>'bg-success',
-                      'Laporan Diproses'=>'bg-primary',
-                      'Laporan Diterima'=>'bg-success',
-                      'Laporan Ditolak'=>'bg-danger',
-                      'Edit Laporan'=>'bg-info text-white',
+                      'Menunggu'=>'bg-warning text-dark',
+                      'Selesai'=>'bg-success text-light',
+                      'Valid'=>'bg-primary text-light',
+                      'Tidak Valid'=>'bg-warning text-dark',
+                      'Ditolak'=>'bg-danger text-light',
+                      'Ditugaskan'=>'bg-info text-light',
+                      'Ditutup'=>'bg-secondary',
                       default=>'bg-secondary',
                     };
                   @endphp
