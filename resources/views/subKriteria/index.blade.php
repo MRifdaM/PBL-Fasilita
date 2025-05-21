@@ -7,7 +7,7 @@
     <div class="card mb-4">
       <div class="card-header d-flex justify-content-between align-items-center">
         <div>
-          <strong>{{ $k->kode_kriteria }}</strong> — {{ $k->nama_kriteria }}
+          <strong>{{ $k->kode_kriteria }}</strong> — {{ $k->nama_kriteria }} ({{ $k->tipe_kriteria }})
         </div>
         <button
           class="btn btn-sm btn-success"

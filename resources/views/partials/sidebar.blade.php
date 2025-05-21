@@ -73,17 +73,11 @@
                     <i class="fas fa-exclamation-triangle menu-icon"></i> Kategori Kerusakan
                 </a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{{ route('laporan.index') }}">Data Laporan</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{{ route('status.index') }}">Status Laporan</a>
-              </li>
             </ul>
           </div>
         </li>
 
-        {{-- SPK & Criteria --}}
+        {{--SPK & Criteria --}}
         <li class="nav-item">
           <a class="nav-link" data-toggle="collapse" href="#spk-management" aria-expanded="false">
             <i class="fas fa-calculator menu-icon"></i>
@@ -102,6 +96,16 @@
                      <i class="fas fa-star-half-alt menu-icon"></i> Skoring Kriteria
                 </a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('spk.index') }}">
+                     <i class="fas fa-calculator menu-icon"></i>Perhitungan
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('skorTopsis.index') }}">
+                     <i class="fas fa-tasks menu-icon"></i>Prioritas Perbaikan
+                </a>
+              </li>
             </ul>
           </div>
         </li>
@@ -111,14 +115,29 @@
       {{-- ADMIN & SARPRAS MENU          --}}
       {{-- ============================= --}}
       @if(auth()->user()->hasAnyRole(['ADM','SPR']))
-      <li class="nav-item">
-        <a class="nav-link" href="">
-        {{-- <a class="nav-link" href="{{ route('verifikasi.index') }}"> --}}
-          <i class="fas fa-clipboard-check menu-icon"></i> <!-- Ganti ikon di sini -->
-          <span class="menu-title">Verifikasi Laporan</span>
-        </a>
-      </li>
-    @endif
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#laporan-management"
+            aria-expanded="false" aria-controls="laporan-management">
+            <i class="fas fa-clipboard-list menu-icon"></i>
+            <span class="menu-title">Laporan</span>
+            <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="laporan-management" data-parent="#sidebar">
+            <ul class="nav flex-column sub-menu">
+                <li class="nav-item">
+                <a class="nav-link" href="{{ route('laporan.index') }}">
+                    <i class="fas fa-clipboard-check menu-icon"></i> Verifikasi Laporan
+                </a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{{ route('riwayat.index') }}">
+                    <i class="fas fa-history menu-icon"></i> Riwayat Laporan
+                </a>
+                </li>
+            </ul>
+            </div>
+        </li>
+        @endif
 
       {{-- ============================= --}}
       {{-- SARPRAS MENU                  --}}
@@ -133,10 +152,10 @@
           <div class="collapse" id="task-management">
             <ul class="nav flex-column sub-menu">
               <li class="nav-item">
-                <a class="nav-link" href="{{ route('spk.topsis') }}">SPK TOPSIS</a>
+                {{-- <a class="nav-link" href="{{ route('spk.topsis') }}">SPK TOPSIS</a> --}}
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{ route('penugasan.index') }}">Penugasan Teknisi</a>
+                {{-- <a class="nav-link" href="{{ route('penugasan.index') }}">Penugasan Teknisi</a> --}}
               </li>
             </ul>
           </div>

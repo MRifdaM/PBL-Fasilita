@@ -4,16 +4,20 @@ use App\Models\SkoringKriteria;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PeranController;
+use App\Http\Controllers\GedungController;
+use App\Http\Controllers\LantaiController;
+use App\Http\Controllers\TopsisController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RuanganController;
 use App\Http\Controllers\KriteriaController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\SkoringKriteriaController;
-use App\Http\Controllers\GedungController;
-use App\Http\Controllers\LantaiController;
-use App\Http\Controllers\RuanganController;
 use App\Http\Controllers\FasilitasController;
-use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\SkorTopsisController;
+use App\Http\Controllers\VerifikasiController;
+use App\Http\Controllers\SkoringKriteriaController;
+use App\Http\Controllers\LaporanFasilitasController;
 use App\Http\Controllers\KategoriFasilitasController;
 use App\Http\Controllers\KategoriKerusakanController;
 use App\Http\Controllers\RiwayatLaporanFasilitasController;
@@ -237,7 +241,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/delete/{id}', [KategoriFasilitasController::class, 'delete'])->name('kategoriF.delete');
             Route::delete('/destroy/{id}', [KategoriFasilitasController::class, 'destroy'])->name('kategoriF.destroy');
         });
-        
+
         // Fasilitas
         Route::prefix('fasilitas')->group(function () {
             Route::get('/', 'FasilitasController@index')->name('fasilitas.index');
@@ -246,21 +250,6 @@ Route::middleware(['auth'])->group(function () {
 
         });
 
-        // Laporan
-        Route::prefix('laporan')->group(function () {
-            Route::get('/', [LaporanController::class, 'index'])->name('laporan.index');
-            Route::get('/list', [LaporanController::class, 'list'])->name('laporan.list');
-            Route::get('/show/{id}', [LaporanController::class, 'show'])->name('laporan.show');
-            Route::get('/create', [LaporanController::class, 'create'])->name('laporan.create');
-            Route::post('/store', [LaporanController::class, 'store'])->name('laporan.store');
-            Route::get('/edit/{id}', [LaporanController::class, 'edit'])->name('laporan.edit');
-            Route::put('/update/{id}', [LaporanController::class, 'update'])->name('laporan.update');
-            Route::get('/delete/{id}', [LaporanController::class, 'delete'])->name('laporan.delete');
-            Route::delete('/destroy/{id}', [LaporanController::class, 'destroy'])->name('laporan.destroy');
-            Route::get('/get-lantai/{idGedung}', [LaporanController::class, 'getLantai']);
-            Route::get('/get-ruangan/{idLantai}', [LaporanController::class, 'getRuangan']);
-
-        });
 
 
          // Status (master)
@@ -312,7 +301,30 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/get-ruangan/{idLantai}', [LaporanController::class, 'getRuangan']);
             Route::get('/{id}/verifikasi', [LaporanController::class,'formByLaporan']) ->name('laporan.verifikasi.form');
             Route::post ('/verifikasi', [LaporanController::class,'storeByLaporan'])->name('laporan.verifikasi.store');
-        });        
+        });
+
+        Route::prefix('laporan-fasilitas')->group(function(){
+            Route::get('/', [RiwayatLaporanFasilitasController::class, 'index'])->name('riwayat.index');
+            Route::get('/list',[RiwayatLaporanFasilitasController::class, 'list'])->name('riwayat.list');
+            Route::get('/{id}/riwayat', [RiwayatLaporanFasilitasController::class, 'show'])->name('riwayat.show');
+            Route::get('/{id}/riwayat/edit', [RiwayatLaporanFasilitasController::class, 'edit'])->name('riwayat.edit');
+            Route::put('/{id}/riwayat', [RiwayatLaporanFasilitasController::class, 'update'])->name('riwayat.update');
+            Route::delete('/{id}', [RiwayatLaporanFasilitasController::class, 'destroy'])->name('riwayat.destroy');
+        });
+
+        Route::prefix('spk')->group(function(){
+            Route::get('/', [TopsisController::class,'index'])->name('spk.index');
+            Route::post('/hitung', [TopsisController::class, 'hitung'])->name('spk.hitung');
+            Route::get('/{id}/edit', [TopsisController::class, 'edit'])->name('spk.edit');
+            Route::put('/{id}', [TopsisController::class, 'update'])->name('spk.update');
+        });
+
+        Route::prefix('skor-topsis')->group(function() {
+    Route::get('/', [SkorTopsisController::class, 'index'])->name('skorTopsis.index');
+    Route::get('/list', [SkorTopsisController::class, 'list'])->name('skorTopsis.list');
+    Route::post('/assign/{id}', [SkorTopsisController::class, 'assign'])->name('skorTopsis.assign');
+});
+
     });
 
     // Route::middleware(['role:ADM,SPR'])->prefix('riwayat')->group(function () {

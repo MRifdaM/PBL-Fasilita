@@ -15,7 +15,7 @@ class LaporanSeeder extends Seeder
     {
         $laporans = [
             [
-                'id_pengguna' => 1,
+                'id_pengguna' => 2,
                 'id_gedung'   => 1,
                 'id_lantai'   => 5,
                 'id_ruangan'  => 1,
