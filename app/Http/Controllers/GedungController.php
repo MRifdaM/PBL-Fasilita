@@ -22,16 +22,19 @@ class GedungController extends Controller
 
         return DataTables::of($data)
             ->addIndexColumn()
+            // Kolom PILIH, tombol full-width dan warna primer
+        ->addColumn('pilih', function($row){
+    return '<button
+                onclick="window.location=\''.route('gedung.lantai.index',$row->id_gedung).'\'"
+                class="btn btn-primary btn-pilih">
+                <i class="mdi mdi-layers"></i>
+                <span class="ms-1">Pilih</span>
+            </button>';
+})
             ->addColumn('aksi', function ($row) {
                 return '
                 <div class="btn-group">
 
-                    <!-- tombol PILIH (lihat lantai) -->
-                    <button onclick="window.location=\'' .
-                        route('gedung.lantai.index', $row->id_gedung) . '\'"
-                        class="btn btn-success btn-sm">
-                        <i class="mdi mdi-layers mr-1"></i>Pilih
-                    </button>
 
                     <!-- tombol EDIT -->
                     <button onclick="modalAction(\'' .
@@ -48,7 +51,7 @@ class GedungController extends Controller
                     </button>
                 </div>';
             })
-            ->rawColumns(['aksi'])
+            ->rawColumns(['pilih', 'aksi']) // kolom yang berisi HTML
             ->make(true);
     }
 

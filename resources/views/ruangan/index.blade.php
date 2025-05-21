@@ -1,13 +1,27 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="card">
+  {{-- Breadcrumb --}}
+  <nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{{ route('gedung.index') }}">Gedung</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="{{ route('gedung.lantai.index', $lantai->gedung) }}">
+          {{ $lantai->gedung->nama_gedung }}
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        {{ $lantai->nomor_lantai }}
+      </li>
+    </ol>
+  </nav>
+
+  <div class="card">
   <div class="card-body">
 
     <div class="d-flex justify-content-between mb-3">
-      <a href="{{ route('gedung.lantai.index',$lantai->gedung) }}" class="btn btn-secondary">
-        <i class="mdi mdi-arrow-left"></i> Kembali
-      </a>
       <button class="btn btn-primary"
               onclick="modalAction('{{ route('lantai.ruangan.create',$lantai) }}')">
         <i class="mdi mdi-plus"></i> Tambah Ruangan

@@ -20,8 +20,8 @@ use App\Http\Controllers\SkoringKriteriaController;
 use App\Http\Controllers\LaporanFasilitasController;
 use App\Http\Controllers\KategoriFasilitasController;
 use App\Http\Controllers\KategoriKerusakanController;
-use App\Http\Controllers\RiwayatVerifikasiController;
 use App\Http\Controllers\RiwayatLaporanFasilitasController;
+
 
 
 
@@ -251,7 +251,8 @@ Route::middleware(['auth'])->group(function () {
         });
 
 
-        // Status (master)
+
+         // Status (master)
         Route::prefix('status')->group(function () {
             Route::get('/', 'StatusController@index')->name('status.index');
             Route::post('/store', 'StatusController@store')->name('status.store');
@@ -329,13 +330,20 @@ Route::middleware(['auth'])->group(function () {
     // Route::middleware(['role:ADM,SPR'])->prefix('riwayat')->group(function () {
     //     Route::get('/', [RiwayatVerifikasiController::class, 'index'])->name('riwayat.index');
     //     Route::get('/list', [RiwayatVerifikasiController::class, 'list'])->name('riwayat.list');
-    //     Route::get('/show/{id}', [RiwayatVerifikasiController::class, 'show'])->name('riwayat.show');
-    //     Route::get('/{id}/edit', [RiwayatVerifikasiController::class,'edit'])->name('riwayat.edit');
-    //     Route::put('/{id}', [RiwayatVerifikasiController::class,'update'])->name('riwayat.update');
-    //     Route::delete('/{id}', [RiwayatVerifikasiController::class,'destroy'])->name('riwayat.destroy');
+    //     Route::get('/{id}', [RiwayatVerifikasiController::class, 'show'])->name('riwayat.show');
     // });
 
-
+    Route::middleware('auth')
+     ->prefix('riwayatPelapor')
+     ->name('riwayatPelapor.')
+     ->group(function(){
+        Route::get('/',    [RiwayatLaporanFasilitasController::class,'index'])->name('index');
+        Route::get('/{id}',[RiwayatLaporanFasilitasController::class,'show'])->name('show');
+        // hanya ketika status terakhir = Edit Laporan
+    Route::get('/{id}/edit',   [RiwayatLaporanFasilitasController::class,'edit'])->name('edit');
+    Route::put('/{id}',        [RiwayatLaporanFasilitasController::class,'update'])->name('update');
+     });
+    
     Route::prefix('profile')->group(function () {
         Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
         Route::get('/edit', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -344,6 +352,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/update-password', [ProfileController::class, 'update_password'])->name('profile.update_password');
     });
 
+
+
+    
     Route::get('/icons', function () {
         return view('pages.icons.index');
     });

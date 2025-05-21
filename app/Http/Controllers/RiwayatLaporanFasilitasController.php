@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\Status;
 use App\Models\Pengguna;
 use Illuminate\Http\Request;
@@ -9,11 +10,9 @@ use App\Models\LaporanFasilitas;
 use App\Models\RiwayatLaporanFasilitas;
 use Yajra\DataTables\Facades\DataTables;
 
+
 class RiwayatLaporanFasilitasController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $breadcrumbs = [
@@ -95,14 +94,6 @@ class RiwayatLaporanFasilitasController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
     {
         //
     }
@@ -198,6 +189,35 @@ class RiwayatLaporanFasilitasController extends Controller
      */
     public function destroy($lapfasId)
     {
-        //
+        $lf = LaporanFasilitas::whereHas('laporan', fn($q)=> $q->where('id_pengguna',Auth::id()))
+                ->findOrFail($id);
+
+        // validasi input
+        $r->validate([
+            'jumlah_rusak' => 'required|integer|min:1',
+            'deskripsi'    => 'required|string',
+            'path_foto'    => 'nullable|image|max:2048',
+        ]);
+
+        // simpan perubahan
+        $lf->jumlah_rusak = $r->input('jumlah_rusak');
+        $lf->deskripsi    = $r->input('deskripsi');
+        if ($file = $r->file('path_foto')) {
+            $lf->path_foto = $file->store('laporan_foto','public');
+        }
+        // kembalikan ke “Menunggu Aktivasi” (id_status=1)
+        $lf->id_status = 1;
+        $lf->save();
+
+        // catat riwayat
+        $lf->riwayat()->create([
+            'id_status'   => 1,
+            'id_pengguna' => Auth::id(),
+            'catatan'     => 'Mahasiswa edit ulang laporan',
+        ]);
+
+        return redirect()
+               ->route('riwayatPelapor.show',$id)
+               ->with('success','Laporan diperbarui. Menunggu konfirmasi admin.');
     }
 }

@@ -1,13 +1,32 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="card">
+  {{-- Breadcrumb --}}
+  <nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{{ route('gedung.index') }}">Gedung</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="{{ route('gedung.lantai.index', $ruangan->lantai->gedung) }}">
+          {{ $ruangan->lantai->gedung->nama_gedung }}
+        </a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="{{ route('lantai.ruangan.index', $ruangan->lantai) }}">
+          {{ $ruangan->lantai->nomor_lantai }}
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        {{ $ruangan->nama_ruangan }}
+      </li>
+    </ol>
+  </nav>
+
+  <div class="card">
   <div class="card-body">
     <h4 class="mb-4">Fasilitas di {{ $ruangan->nama_ruangan }}</h4>
     <div class="d-flex justify-content-between mb-3">
-      <a href="{{ route('lantai.ruangan.index', $ruangan->lantai) }}" class="btn btn-secondary">
-  <i class="mdi mdi-arrow-left"></i> Kembali
-</a>
       <button class="btn btn-primary"
               onclick="modalAction('{{ route('ruangan.fasilitas.create',$ruangan) }}')">
         <i class="mdi mdi-plus"></i> Tambah Fasilitas

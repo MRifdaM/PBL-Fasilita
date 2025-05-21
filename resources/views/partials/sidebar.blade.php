@@ -50,21 +50,6 @@
                                 <i class="fas fa-university menu-icon"></i> Gedung
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('lantai.index') }}">
-                                <i class="fas fa-layer-group menu-icon"></i> Lantai
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('ruangan.index') }}">
-                                <i class="fas fa-door-open menu-icon"></i> Ruangan
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('fasilitas.index') }}">
-                                <i class="fas fa-couch menu-icon"></i> Fasilitas
-                            </a>
-                        </li>
                     </ul>
                 </div>
             </li>
@@ -181,18 +166,28 @@
       {{-- EXTERNAL USER MENU (MHS/DSN/TDK) --}}
       {{-- ============================= --}}
       @if(auth()->user()->hasAnyRole(['MHS','DSN','TDK']))
-        <li class="nav-item">
-          <a class="nav-link" href="{{ route('laporan.create') }}">
-            <i class="icon-note menu-icon"></i>
-            <span class="menu-title">Buat Laporan</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ route('laporan.index') }}">
-            <i class="icon-clock menu-icon"></i>
-            <span class="menu-title">Riwayat Laporan</span>
-          </a>
-        </li>
+      <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#user-management"
+                    aria-expanded="false" aria-controls="user-management">
+                    <i class="fas fa-users-cog menu-icon"></i>
+                    <span class="menu-title">Pelaporan</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="collapse" id="user-management" data-parent="#sidebar">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('laporan.index') }}">
+                                <i class="fas fa-user-shield menu-icon"></i> Buat Laporan
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('riwayatPelapor.index') }}">
+                                <i class="fas fa-user-friends menu-icon"></i> Riwayat Laporan
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
       @endif
 
       {{-- ============================= --}}
