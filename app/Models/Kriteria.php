@@ -25,7 +25,7 @@ class Kriteria extends Model
         return $this->hasMany(SkorKriteriaLaporan::class, 'id_kriteria');
     }
 
-    public function skoringKriteria(): HasMany
+    public function skoringKriterias(): HasMany
     {
         return $this->hasMany(SkoringKriteria::class, 'id_kriteria');
     }

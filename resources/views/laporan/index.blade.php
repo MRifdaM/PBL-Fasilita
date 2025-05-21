@@ -51,9 +51,9 @@
             });
         }
 
-        var tablePeran;
+        var tableLaporan;
         $(document).ready(function() {
-            tablePeran = $('#table-peran').DataTable({
+            tableLaporan = $('#table-peran').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {

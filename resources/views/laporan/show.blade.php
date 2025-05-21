@@ -48,7 +48,7 @@
                 <div class="px-4 py-2 border border-secondary rounded-lg" style="overflow-y: scroll; height: 300px">
                     @foreach ($laporan->laporanFasilitas as $lf)
                         <div class="row my-2 py-3 border border-dark rounded-lg shadow-lg">
-                            <div class="col-3"><img src="{{ asset('foto/default.jpg') }}"
+                            <div class="col-3"><img src="{{ asset('storage/' . $lf->path_foto) }}"
                                     class="w-100 h-100 border rounded-lg" alt=""
                                     style="overflow: hidden; object-fit: cover; object-position: center"></div>
                             <div class="col-9">

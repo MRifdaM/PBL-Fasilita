@@ -21,7 +21,7 @@ class KriteriaController extends Controller
         $activeMenu = 'kriteria';
 
         // eager load skoring for each kriteria
-        $kriteria = Kriteria::with('skoringKriteria')->orderBy('kode_kriteria')->get();
+        $kriteria = Kriteria::with('skoringKriterias')->orderBy('kode_kriteria')->get();
 
         return view('kriteria.index', compact('activeMenu','breadcrumbs','kriteria'));
     }
