@@ -34,7 +34,11 @@ class SkorTopsisController extends Controller
          // Ambil global run terbaru
     $run = SkorTipe::where('tipe', 'global')
            ->latest('id_skor_tipe')
-           ->firstOrFail();
+           ->first();
+
+    if (! $run) {
+        return DataTables::of(collect())->make(true);
+    }
 
     // Query builder dengan join, hanya kolom yang diperlukan
     $query = DB::table('skor_topsis as s')

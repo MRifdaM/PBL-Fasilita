@@ -16,6 +16,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FasilitasController;
 use App\Http\Controllers\SkorTopsisController;
 use App\Http\Controllers\VerifikasiController;
+use App\Http\Controllers\RiwayatPelaporController;
 use App\Http\Controllers\SkoringKriteriaController;
 use App\Http\Controllers\LaporanFasilitasController;
 use App\Http\Controllers\KategoriFasilitasController;
@@ -333,17 +334,15 @@ Route::middleware(['auth'])->group(function () {
     //     Route::get('/{id}', [RiwayatVerifikasiController::class, 'show'])->name('riwayat.show');
     // });
 
-    Route::middleware('auth')
-     ->prefix('riwayatPelapor')
+    Route::middleware('role:MHS, DSN, TDK')->prefix('riwayatPelapor')
      ->name('riwayatPelapor.')
      ->group(function(){
-        Route::get('/',    [RiwayatLaporanFasilitasController::class,'index'])->name('index');
-        Route::get('/{id}',[RiwayatLaporanFasilitasController::class,'show'])->name('show');
-        // hanya ketika status terakhir = Edit Laporan
-    Route::get('/{id}/edit',   [RiwayatLaporanFasilitasController::class,'edit'])->name('edit');
-    Route::put('/{id}',        [RiwayatLaporanFasilitasController::class,'update'])->name('update');
-     });
-    
+        Route::get('/',    [RiwayatPelaporController::class,'index'])->name('index');
+        Route::get('/{id}',[RiwayatPelaporController::class,'show'])->name('show');
+        Route::get('/{id}/edit',   [RiwayatPelaporController::class,'edit'])->name('edit');
+        Route::put('/{id}',        [RiwayatPelaporController::class,'update'])->name('update');
+    });
+
     Route::prefix('profile')->group(function () {
         Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
         Route::get('/edit', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -354,7 +353,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-    
+
     Route::get('/icons', function () {
         return view('pages.icons.index');
     });

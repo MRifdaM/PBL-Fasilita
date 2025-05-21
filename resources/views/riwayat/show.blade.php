@@ -89,7 +89,8 @@
                 <tr>
                   <th width="5%">#</th>
                   <th width="20%">Status</th>
-                  <th width="20%">Petugas</th>
+                  <th width="20%">Modifikator</th>
+                  <th width="20%">Peran</th>
                   <th width="35%">Catatan</th>
                   <th width="20%">Waktu</th>
                 </tr>
@@ -109,6 +110,7 @@
                     </span>
                   </td>
                   <td>{{ $item->pengguna->nama }}</td>
+                  <td>{{ $item->pengguna->peran->nama_peran }}</td>
                   <td>{{ $item->catatan ?: '-' }}</td>
                   <td>{{ $item->created_at->format('d M Y H:i') }}</td>
                 </tr>
