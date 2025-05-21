@@ -333,7 +333,6 @@ Route::middleware(['auth'])->group(function () {
     //     Route::get('/{id}/edit', [RiwayatVerifikasiController::class,'edit'])->name('riwayat.edit');
     //     Route::put('/{id}', [RiwayatVerifikasiController::class,'update'])->name('riwayat.update');
     //     Route::delete('/{id}', [RiwayatVerifikasiController::class,'destroy'])->name('riwayat.destroy');
-
     // });
 
 
