@@ -12,47 +12,106 @@ use App\Models\LaporanFasilitas;
 use Illuminate\Support\Facades\DB;
 use App\Models\SkorKriteriaLaporan;
 use Illuminate\Support\Facades\Cache;
+use Yajra\DataTables\Facades\DataTables;
 
 class TopsisController extends Controller
 {
     public function index(Request $request)
     {
-        $kriterias   = Kriteria::orderBy('kode_kriteria')->get();
-        $alternatifs = LaporanFasilitas::with('fasilitas','laporan.pengguna','penilaian.skorKriteriaLaporan')
-            ->where('id_status', Status::VALID)
-            ->where('is_active', true)
-            ->whereDoesntHave('penugasan') // hanya yang belum ditugaskan
-            ->whereHas('penilaian')
-            ->get();
-
-        $runId = $request->input('runId')
-               ?: optional(SkorTipe::where('tipe','global')->latest('created_at')->first())->id_skor_tipe;
-
-         $steps = Cache::get("topsis.steps.{$runId}", []);
-
+        // selalu ambil kriteria
         $breadcrumbs = [
             ['title'=>'Dashboard','url'=>route('dashboard')],
             ['title'=>'Analisis TOPSIS','url'=>route('spk.index')],
         ];
 
-        // base view data
-        $data = [
+        // cek apakah ada runId, dan apakah ada step cache-nya
+        $runId = $request->input('runId')
+            ?: optional(SkorTipe::where('tipe','global')
+                        ->latest('created_at')
+                        ->first())
+                        ->id_skor_tipe;
+
+        $cacheKey = "topsis.steps.{$runId}";
+        if (Cache::has($cacheKey)) {
+            // mode “sudah hitung” — pakai semuah data dari cache
+            $steps = Cache::get($cacheKey);
+            return view('perhitungan.index', [
+                'breadcrumbs' => $breadcrumbs,
+                'kriterias'   => $steps['kriterias'],
+                'alternatifs' => $steps['alternatifs'],
+                'norm'        => $steps['norm'],
+                'V'           => $steps['V'],
+                'idealPos'    => $steps['idealPos'],
+                'idealNeg'    => $steps['idealNeg'],
+                'distPos'     => $steps['distPos'],
+                'distNeg'     => $steps['distNeg'],
+                'Ci'          => $steps['Ci'],
+                'runId'       => $steps['runId'],
+            ]);
+        }
+
+        // mode “belum hitung” — ambil fresh data (unassigned) saja
+        $kriterias   = Kriteria::orderBy('kode_kriteria')->get();
+        $alternatifs = LaporanFasilitas::with('penilaian.skorKriteriaLaporan.kriteria')
+            ->where('id_status', Status::VALID)
+            ->where('is_active', true)
+            ->whereDoesntHave('penugasan')
+            ->whereHas('penilaian')
+            ->get();
+
+        return view('perhitungan.index', [
+            'breadcrumbs' => $breadcrumbs,
             'kriterias'   => $kriterias,
             'alternatifs' => $alternatifs,
-            'breadcrumbs' => $breadcrumbs,
-            // these may or may not exist
-            'norm'        => $steps['norm']        ?? null,
-            'V'           => $steps['V']           ?? null,
-            'idealPos'    => $steps['idealPos']    ?? null,
-            'idealNeg'    => $steps['idealNeg']    ?? null,
-            'distPos'     => $steps['distPos']     ?? null,
-            'distNeg'     => $steps['distNeg']     ?? null,
-            'Ci'          => $steps['Ci']          ?? null,
-            'runId'       => $steps['runId']       ?? null,
+        ]);
+    }
+
+    public function listAlternatif(Request $request)
+{
+    // 1) grab all kriteria once
+    $kriterias = Kriteria::orderBy('kode_kriteria')->get();
+
+    // 2) load all laporan fasilitas with their penilaian
+    $items = LaporanFasilitas::with([
+        'fasilitas',
+        'laporan.pengguna',
+        'penilaian.skorKriteriaLaporan'
+    ])
+    ->where('id_status', Status::VALID)
+    ->where('is_active', true)
+    ->whereHas('penilaian')
+    ->get();
+
+    // 3) map into a flat array per row
+    $rows = $items->map(function($lf) use($kriterias) {
+        $base = [
+            'id'          => $lf->id_laporan_fasilitas,
+            'alternatif'  => $lf->fasilitas->nama_fasilitas,
+            'pelapor'     => $lf->laporan->pengguna->nama,
         ];
 
-        return view('perhitungan.index', $data);
-    }
+        // for each kriteria, attach its kode_kriteria => nilai_mentah (or '-')
+        foreach($kriterias as $k) {
+            $sk = $lf->penilaian
+                     ->first()?->skorKriteriaLaporan
+                     ->firstWhere('id_kriteria', $k->id_kriteria);
+            $base[$k->kode_kriteria] = $sk->nilai_mentah ?? '-';
+        }
+
+        // add the edit-URL for the action column
+        $base['aksi'] = '<button class="btn btn-sm btn-warning btn-edit" data-url="'
+            .route('spk.edit', $lf->id_laporan_fasilitas).
+            '"><i class="mdi mdi-pencil"></i></button>';
+
+        return $base;
+    });
+
+    // 4) feed the collection directly into DataTables
+    return DataTables::of($rows)
+        ->addIndexColumn()
+        ->rawColumns(['aksi'])
+        ->make(true);
+}
 
     public function hitung(Request $request)
     {

@@ -14,6 +14,7 @@ use App\Http\Controllers\KriteriaController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FasilitasController;
+use App\Http\Controllers\PenugasanController;
 use App\Http\Controllers\SkorTopsisController;
 use App\Http\Controllers\VerifikasiController;
 use App\Http\Controllers\RiwayatPelaporController;
@@ -315,16 +316,18 @@ Route::middleware(['auth'])->group(function () {
 
         Route::prefix('spk')->group(function(){
             Route::get('/', [TopsisController::class,'index'])->name('spk.index');
+            Route::get('/alternatif/list', [TopsisController::class,'listAlternatif'])->name('spk.alternatif.list');
             Route::post('/hitung', [TopsisController::class, 'hitung'])->name('spk.hitung');
             Route::get('/{id}/edit', [TopsisController::class, 'edit'])->name('spk.edit');
             Route::put('/{id}', [TopsisController::class, 'update'])->name('spk.update');
         });
 
         Route::prefix('skor-topsis')->group(function() {
-    Route::get('/', [SkorTopsisController::class, 'index'])->name('skorTopsis.index');
-    Route::get('/list', [SkorTopsisController::class, 'list'])->name('skorTopsis.list');
-    Route::post('/assign/{id}', [SkorTopsisController::class, 'assign'])->name('skorTopsis.assign');
-});
+            Route::get('/', [SkorTopsisController::class, 'index'])->name('skorTopsis.index');
+            Route::get('/list', [SkorTopsisController::class, 'list'])->name('skorTopsis.list');
+            Route::get('/{id}/assign', [SkorTopsisController::class,'assignForm'])->name('skorTopsis.assignForm');
+            Route::post('/{id}/assign', [SkorTopsisController::class,'assign'])->name('skorTopsis.assign');
+        });
 
     });
 
