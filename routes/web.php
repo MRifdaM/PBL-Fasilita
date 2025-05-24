@@ -23,10 +23,7 @@ use App\Http\Controllers\LaporanFasilitasController;
 use App\Http\Controllers\KategoriFasilitasController;
 use App\Http\Controllers\KategoriKerusakanController;
 use App\Http\Controllers\RiwayatLaporanFasilitasController;
-
-
-
-
+use App\Models\Penugasan;
 
 /*
 |--------------------------------------------------------------------------
@@ -328,6 +325,23 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/{id}/assign', [SkorTopsisController::class,'assignForm'])->name('skorTopsis.assignForm');
             Route::post('/{id}/assign', [SkorTopsisController::class,'assign'])->name('skorTopsis.assign');
         });
+
+        Route::prefix('verifikasi-perbaikan')->middleware('role:ADM,SPR')->group(function(){
+            Route::get('{id}/form', [PenugasanController::class,'verifyForm'])->name('verifikasi.perbaikan.form');
+            Route::post('{id}/form', [PenugasanController::class,'verify'])->name('verifikasi.perbaikan.submit');
+        });
+
+    });
+
+    Route::middleware(['role:ADM,TNS'])->group(function(){
+        Route::prefix('penugasan')->group(function(){
+            Route::get('/', [PenugasanController::class,'index'])->name('penugasan.index');
+            Route::get('/list', [PenugasanController::class,'list'])->name('penugasan.list');
+        });
+
+        Route::get('laporan-fasilitas/{id}/show', [PenugasanController::class, 'perbaikanForm'])->name('laporanFasilitas.show');
+        Route::post('laporan-fasilitas/{id}/perbaikan', [PenugasanController::class,'perbaikanSubmit'])->name('laporanFasilitas.perbaikan.submit');
+
 
     });
 

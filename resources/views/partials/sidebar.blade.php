@@ -196,11 +196,23 @@
       {{-- TECHNICIAN MENU               --}}
       {{-- ============================= --}}
       @if(auth()->user()->hasRole('TNS'))
-        <li class="nav-item">
-          <a class="nav-link" href="{{ route('tugas.index') }}">
-            <i class="icon-wrench menu-icon"></i>
-            <span class="menu-title">Daftar Tugas</span>
-          </a>
+      <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#user-management"
+                aria-expanded="false" aria-controls="user-management">
+                <i class="fas fa-file-alt menu-icon"></i> <!-- Ikon dokumen/laporan -->
+                <span class="menu-title">Penugasan</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="user-management" data-parent="#sidebar">
+                <ul  class="nav flex-column sub-menu">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('penugasan.index') }}">
+                            <i class="mdi mdi-clipboard-text"></i>
+                            <span>Daftar Tugas</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </li>
       @endif
 

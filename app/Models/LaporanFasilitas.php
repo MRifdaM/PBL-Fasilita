@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -56,9 +57,9 @@ class LaporanFasilitas extends Model
         return $this->hasMany(RiwayatLaporanFasilitas::class, 'id_laporan_fasilitas');
     }
 
-    public function penugasan(): HasMany
+    public function penugasan(): HasOne
     {
-        return $this->hasMany(Penugasan::class, 'id_laporan_fasilitas');
+        return $this->hasOne(Penugasan::class, 'id_laporan_fasilitas');
     }
 
     public function penilaian(): HasMany
