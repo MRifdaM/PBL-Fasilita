@@ -8,9 +8,10 @@
         <div class="d-flex justify-content-between align-items-center">
           <h3 class="card-title my-5 w-25">Data Kriteria</h3>
           <button
-            class="btn btn-primary btn-sm"
+            class="btn btn-primary"
             onclick="modalAction('{{ route('kriteria.create') }}')"
           >
+          <i class="fa fa-plus mr-1"></i>
             Tambah Kriteria
           </button>
         </div>
@@ -25,7 +26,6 @@
                 <th>Nama Kriteria</th>
                 <th>Bobot</th>
                 <th>Tipe</th>
-                <th>Deskripsi</th>
                 <th>Aksi</th>
               </tr>
             </thead>
@@ -74,7 +74,6 @@
         { data: 'nama_kriteria', name: 'nama_kriteria' },
         { data: 'bobot_kriteria', name: 'bobot_kriteria' },
         { data: 'tipe_kriteria', name: 'tipe_kriteria' },
-        { data: 'deskripsi', name: 'deskripsi' },
         { data: 'aksi', name: 'aksi', orderable: false, searchable: false },
       ],
       error: function(xhr) {

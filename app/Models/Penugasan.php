@@ -15,6 +15,7 @@ class Penugasan extends Model
     protected $fillable = [
         'id_laporan_fasilitas',
         'id_pengguna', // id teknisi
+        'is_complete',
     ];
 
     public function laporanFasilitas(): BelongsTo
@@ -23,6 +24,16 @@ class Penugasan extends Model
     }
 
     public function teknisi(): BelongsTo
+    {
+        return $this->belongsTo(Pengguna::class, 'id_pengguna');
+    }
+
+    public function perbaikan()
+    {
+        return $this->hasOne(Perbaikan::class, 'id_penugasan');
+    }
+
+    public function pengguna(): BelongsTo
     {
         return $this->belongsTo(Pengguna::class, 'id_pengguna');
     }

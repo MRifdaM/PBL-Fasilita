@@ -19,10 +19,15 @@
         @csrf @method('DELETE')
         <div class="modal-body">
           <h3 class="mb-5">Apakah anda yakin ingin menghapus data ini?</h3>
+          <div class="table-responsive">
           <table class="table table-striped">
             <tr><th>Kode Kriteria</th><td>{{ $kriteria->kode_kriteria }}</td></tr>
             <tr><th>Nama Kriteria</th><td>{{ $kriteria->nama_kriteria }}</td></tr>
+            <tr><th>Bobot</th><td>{{ $kriteria->bobot_kriteria }}</td></tr>
+            <tr><th>Tipe Kriteria</th><td>{{ $kriteria->tipe_kriteria }}</td></tr>
+            <tr><th>Deskripsi</th><td>{{ $kriteria->deskripsi }}</td></tr>
           </table>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-warning" data-dismiss="modal">Tutup</button>

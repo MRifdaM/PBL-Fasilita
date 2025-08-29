@@ -16,13 +16,9 @@ class Pengguna extends Authenticatable
     protected $table = 'pengguna';
     protected $primaryKey = 'id_pengguna';
 
-    // 1) Default kolom foto_profile jika null
-    protected $attributes = [
-        'foto_profile' => 'default.jpg',
-    ];
-
     protected $fillable = [
         'id_peran',
+        'no_induk',
         'username',
         'nama',
         'password',
@@ -36,6 +32,7 @@ class Pengguna extends Authenticatable
 
     protected $casts = [
         'password' => 'hashed',
+        'detail_induk' => 'array',
     ];
 
     // 2) Accessor untuk URL foto profil
@@ -82,7 +79,7 @@ class Pengguna extends Authenticatable
 
     public function penugasan(): HasMany
     {
-        return $this->hasMany(Penugasan::class, 'id_teknisi');
+        return $this->hasMany(Penugasan::class, 'id_pengguna');
     }
 
     public function penilaian(): HasMany
@@ -93,5 +90,34 @@ class Pengguna extends Authenticatable
     public function penilaianPengguna(): HasMany
     {
         return $this->hasMany(PenilaianPengguna::class, 'id_pengguna');
+    }
+
+    public function notifikasi(): HasMany
+    {
+        return $this->hasMany(Notifikasi::class, 'id_pengguna');
+    }
+
+        /**
+     * Get unread notifications
+     */
+    public function unreadNotifications()
+    {
+        return $this->notifikasi()->where('is_read', false);
+    }
+
+    /**
+     * Get unread notification count
+     */
+    public function getUnreadNotificationCountAttribute()
+    {
+        return $this->unreadNotifications()->count();
+    }
+
+    /**
+     * Mark all notifications as read
+     */
+    public function markAllNotificationsAsRead()
+    {
+        return $this->unreadNotifications()->update(['is_read' => true]);
     }
 }

@@ -7,7 +7,7 @@
     <div class="card mb-4">
       <div class="card-header d-flex justify-content-between align-items-center">
         <div>
-          <strong>{{ $k->kode_kriteria }}</strong> — {{ $k->nama_kriteria }}
+          <strong>{{ $k->kode_kriteria }}</strong> — {{ $k->nama_kriteria }} ({{ $k->tipe_kriteria }})
         </div>
         <button
           class="btn btn-sm btn-success"
@@ -17,10 +17,12 @@
         </button>
       </div>
       <div class="card-body">
-        <table
-          class="table table-sm table-striped"
-          id="table-skoring-{{ $k->id_kriteria }}"
-        >
+        <div class="table-responsive">
+            <table
+                class="table table-sm table-striped nowrap"
+                id="table-skoring-{{ $k->id_kriteria }}"
+                style="width:100%;"
+            >
           <thead>
             <tr>
               <th>No</th>
